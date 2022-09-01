@@ -10,6 +10,8 @@ namespace RecentlySaved.Console
 
     public FileWatcher(IEnumerable<string> pathList)
     {
+      this.watcherList = new List<FileSystemWatcher>();
+
       foreach (string path in pathList)
       {
         var watcher = new FileSystemWatcher(path);
@@ -33,7 +35,7 @@ namespace RecentlySaved.Console
         watcher.IncludeSubdirectories = true;
         watcher.EnableRaisingEvents = true;
 
-        watcherList.Add(watcher);
+        this.watcherList.Add(watcher);
       }
 
       Console.WriteLine("Press enter to exit.");

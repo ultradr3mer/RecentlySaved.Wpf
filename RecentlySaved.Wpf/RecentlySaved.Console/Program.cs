@@ -11,31 +11,19 @@ namespace RecentlySaved.Console
     class Options
     {
 
-      [Option('p', "paths", Required = true, HelpText = "Patths to be watched.")]
+      [Option('p', "paths", Separator = ',', Required = true, HelpText = "Patths to be watched.")]
       public IEnumerable<string> Paths { get; set; }
 
     }
 
-
     static void Main(string[] args)
     {
-      CommandLine.Parser.Default.ParseArguments<Options>(args).
-        WithParsed(RunOptions).
-        WithNotParsed(HandleParseError);
+      Options options = CommandLine.Parser.Default.ParseArguments<Options>(args).Value;
+      watcher = new FileWatcher(options.Paths);
 
       Console.Pause();
 
       watcher.Dispose();
-    }
-
-    private static void HandleParseError(IEnumerable<Error> obj)
-    {
-      throw new System.NotImplementedException();
-    }
-
-    private static void RunOptions(Options obj)
-    {
-      Program.watcher = new FileWatcher(obj.Paths);
     }
   }
 }
