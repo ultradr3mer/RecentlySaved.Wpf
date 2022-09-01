@@ -100,7 +100,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Composite\BaseViewModel.cs" />
+    <Compile Include="ViewModels\DesignTime\MainWindowViewModelDesignTime.cs" />
+    <Compile Include="ViewModels\EntryItemViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Views\Controls\FileCard.xaml.cs">
+      <DependentUpon>FileCard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -133,6 +138,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\Controls\FileCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

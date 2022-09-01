@@ -1,13 +1,11 @@
-﻿using RecentlySaved.Wpf.Composite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RecentlySaved.Wpf.ViewModels.DesignTime;
 
 namespace RecentlySaved.Wpf.ViewModels
 {
-  internal class MainWindowViewModel : BaseViewModel
+  public class MainWindowViewModel : MainWindowViewModelDesignTime
   {
+    protected override void Initialize()
+    {
+    }
   }
 }
