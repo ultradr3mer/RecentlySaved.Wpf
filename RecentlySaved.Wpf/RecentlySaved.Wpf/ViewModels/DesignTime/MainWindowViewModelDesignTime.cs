@@ -17,7 +17,9 @@ namespace RecentlySaved.Wpf.ViewModels.DesignTime
     {
       this.Items = new List<EntryItemViewModel>()
       {
-        new EntryItemViewModel { Title = "Datei 1", Description = "Geändert am 01.09.2022" }
+        new EntryItemViewModel { Title = "Datei 1", Description = "Geändert am 01.09.2022" },
+        new EntryItemViewModel { Title = "Datei 2", Description = "Geändert am 01.09.2022" },
+        new EntryItemViewModel { Title = "Datei 3", Description = "Geändert am 01.09.2022" }
       };
     }
   }
