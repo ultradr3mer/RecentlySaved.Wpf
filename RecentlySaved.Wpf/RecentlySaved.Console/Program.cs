@@ -1,29 +1,8 @@
-﻿using CommandLine;
-using Microsoft.Extensions.Options;
-using System.Collections.Generic;
+﻿using RecentlySaved.Console;
 
-namespace RecentlySaved.Console
-{
-  internal class Program
-  {
-    private static FileWatcher watcher;
-
-    class Options
-    {
-
-      [Option('p', "paths", Separator = ',', Required = true, HelpText = "Patths to be watched.")]
-      public IEnumerable<string> Paths { get; set; }
-
-    }
-
-    static void Main(string[] args)
-    {
-      Options options = CommandLine.Parser.Default.ParseArguments<Options>(args).Value;
-      watcher = new FileWatcher(options.Paths);
-
-      Console.Pause();
-
-      watcher.Dispose();
-    }
-  }
-}
+Options options = CommandLine.Parser.Default.ParseArguments<Options>(args).Value;
+LinkService linkService = new LinkService(options.TargetPath);
+FileWatcher watcher = new FileWatcher(linkService, options.Paths);
+System.Console.WriteLine("Press enter to exit.");
+System.Console.ReadLine();
+watcher.Dispose();

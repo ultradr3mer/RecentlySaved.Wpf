@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-
-namespace RecentlySaved.Console
+﻿namespace RecentlySaved.Console
 {
   class FileWatcher : IDisposable
   {
     private List<FileSystemWatcher> watcherList;
+    private readonly LinkService linkService;
 
-    public FileWatcher(IEnumerable<string> pathList)
+    public FileWatcher(LinkService linkService, IEnumerable<string> pathList)
     {
+      this.linkService = linkService;
       this.watcherList = new List<FileSystemWatcher>();
 
       foreach (string path in pathList)
@@ -32,14 +30,10 @@ namespace RecentlySaved.Console
         watcher.Error += OnError;
 
         watcher.Filter = "*.*";
-        watcher.IncludeSubdirectories = true;
         watcher.EnableRaisingEvents = true;
 
         this.watcherList.Add(watcher);
       }
-
-      Console.WriteLine("Press enter to exit.");
-      Console.ReadLine();
     }
 
     private void OnChanged(object sender, FileSystemEventArgs e)
@@ -48,23 +42,30 @@ namespace RecentlySaved.Console
       {
         return;
       }
-      Console.WriteLine($"Changed: {e.FullPath}");
+      System.Console.WriteLine($"Changed: {e.FullPath}");
+      this.linkService.CreateUpdateLink(e.FullPath);
     }
 
     private void OnCreated(object sender, FileSystemEventArgs e)
     {
       string value = $"Created: {e.FullPath}";
-      Console.WriteLine(value);
+      System.Console.WriteLine(value);
+      this.linkService.CreateUpdateLink(e.FullPath);
     }
 
-    private void OnDeleted(object sender, FileSystemEventArgs e) =>
-        Console.WriteLine($"Deleted: {e.FullPath}");
+    private void OnDeleted(object sender, FileSystemEventArgs e)
+    {
+      System.Console.WriteLine($"Deleted: {e.FullPath}");
+      this.linkService.DeleteLink(e.FullPath);
+    }
 
     private void OnRenamed(object sender, RenamedEventArgs e)
     {
-      Console.WriteLine($"Renamed:");
-      Console.WriteLine($"    Old: {e.OldFullPath}");
-      Console.WriteLine($"    New: {e.FullPath}");
+      System.Console.WriteLine($"Renamed:");
+      System.Console.WriteLine($"    Old: {e.OldFullPath}");
+      System.Console.WriteLine($"    New: {e.FullPath}");
+      //this.linkService.DeleteLink(e.OldFullPath);
+      //this.linkService.CreateLink(e.FullPath);
     }
 
     private void OnError(object sender, ErrorEventArgs e) =>
@@ -74,11 +75,14 @@ namespace RecentlySaved.Console
     {
       if (ex != null)
       {
-        Console.WriteLine($"Message: {ex.Message}");
-        Console.WriteLine("Stacktrace:");
-        Console.WriteLine(ex.StackTrace);
-        Console.WriteLine();
-        PrintException(ex.InnerException);
+        System.Console.WriteLine($"Message: {ex.Message}");
+        System.Console.WriteLine("Stacktrace:");
+        System.Console.WriteLine(ex.StackTrace);
+        System.Console.WriteLine();
+        if (ex.InnerException != null)
+        {
+          PrintException(ex.InnerException);
+        }
       }
     }
 
