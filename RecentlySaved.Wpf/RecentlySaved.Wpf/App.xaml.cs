@@ -1,11 +1,14 @@
 ﻿using Prism.Ioc;
+using Prism.Mvvm;
 using Prism.Unity;
+using RecentlySaved.Wpf.Repositories;
 using RecentlySaved.Wpf.Views;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -32,6 +35,11 @@ namespace RecentlySaved.Wpf
 
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
+      containerRegistry.RegisterManySingleton<SettingsRepository>();
+      containerRegistry.RegisterManySingleton<FileRepository>();
+      containerRegistry.RegisterManySingleton<FileWatcher>();
+
+      ViewModelLocationProvider.SetDefaultViewModelFactory((type) => this.Container.Resolve(type));
     }
 
     #endregion

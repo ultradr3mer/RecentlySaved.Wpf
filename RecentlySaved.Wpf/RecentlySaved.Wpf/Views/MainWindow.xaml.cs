@@ -1,5 +1,7 @@
 ﻿
 using MahApps.Metro.Controls;
+using Prism.Regions;
+using RecentlySaved.Wpf.Views.Fragments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Unity;
 
 namespace RecentlySaved.Wpf.Views
 {
@@ -21,9 +24,13 @@ namespace RecentlySaved.Wpf.Views
   /// </summary>
   public partial class MainWindow : MetroWindow
   {
-    public MainWindow()
+    public const string RecentFilesRegion = "RecentFilesRegion";
+
+    public MainWindow(IRegionManager regionManager, IUnityContainer container)
     {
       InitializeComponent();
+
+      regionManager.RegisterViewWithRegion(MainWindow.RecentFilesRegion, () => container.Resolve<RecentFilesFragment>());
     }
   }
 }

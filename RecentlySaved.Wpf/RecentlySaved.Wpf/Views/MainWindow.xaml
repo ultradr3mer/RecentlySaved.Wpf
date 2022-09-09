@@ -10,18 +10,16 @@
         d:DataContext ="{d:DesignInstance {x:Type designTime:MainWindowViewModelDesignTime}, IsDesignTimeCreatable=True}"
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="MainWindow" Height="450" Width="800">
-    <Grid Background="{StaticResource MahApps.Brushes.Control.Background}">
-        <ItemsControl ItemsSource="{Binding Items}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Controls:FileCard/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </Grid>
+  <Grid Background="{StaticResource MahApps.Brushes.Control.Background}">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="10"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="10"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="10"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <ContentControl Grid.Row="0" prism:RegionManager.RegionName="RecentFilesRegion" />
+  </Grid>
 </mah:MetroWindow>

@@ -41,8 +41,17 @@
     <Reference Include="MahApps.Metro, Version=2.0.0.0, Culture=neutral, PublicKeyToken=51482d6f650b2b3f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.2.4.9\lib\net47\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="Mapster, Version=7.3.0.0, Culture=neutral, PublicKeyToken=2f39883af23c29a8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mapster.7.3.0\lib\netstandard2.0\Mapster.dll</HintPath>
+    </Reference>
+    <Reference Include="Mapster.Core, Version=1.2.0.0, Culture=neutral, PublicKeyToken=e64997d676a9c1d3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mapster.Core.1.2.0\lib\net45\Mapster.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.31\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Prism, Version=8.1.97.5141, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Core.8.1.97\lib\net47\Prism.dll</HintPath>
@@ -100,11 +109,27 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Composite\BaseViewModel.cs" />
+    <Compile Include="Composite\BaseViewModelOfT.cs" />
+    <Compile Include="Data\FileData.cs" />
+    <Compile Include="Data\FileRepoData.cs" />
+    <Compile Include="Data\SettingsData.cs" />
+    <Compile Include="Events\RecentFilesChangedEvent.cs" />
+    <Compile Include="Extensions\BaseViewModelExtensions.cs" />
+    <Compile Include="Repositories\FileRepository.cs" />
+    <Compile Include="Repositories\SettingsRepository.cs" />
+    <Compile Include="Services\FileWatcher.cs" />
+    <Compile Include="ViewModels\Controls\DesignTime\FileCardViewModelDesignTime.cs" />
+    <Compile Include="ViewModels\Controls\FileCardViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\MainWindowViewModelDesignTime.cs" />
     <Compile Include="ViewModels\EntryItemViewModel.cs" />
+    <Compile Include="ViewModels\Fragments\DesignTime\RecentFilesFragmentViewModelDesignTime.cs" />
+    <Compile Include="ViewModels\Fragments\RecentFilesFragmentViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\Controls\FileCard.xaml.cs">
       <DependentUpon>FileCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Fragments\RecentFilesFragment.xaml.cs">
+      <DependentUpon>RecentFilesFragment.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -142,10 +167,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Fragments\RecentFilesFragment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
