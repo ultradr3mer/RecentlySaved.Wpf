@@ -124,7 +124,7 @@
     <Compile Include="Events\FileDeletedEvent.cs" />
     <Compile Include="Events\FileRenamedEvent.cs" />
     <Compile Include="Extensions\BaseViewModelExtensions.cs" />
-    <Compile Include="Repositories\FileRepository.cs" />
+    <Compile Include="Repositories\PersistantRepository.cs" />
     <Compile Include="Repositories\SettingsRepository.cs" />
     <Compile Include="Services\ClipboardWatcher.cs" />
     <Compile Include="Services\FileWatcher.cs" />

@@ -11,6 +11,11 @@ namespace RecentlySaved.Wpf.Events
   public class ClipboardChangedData
   {
     public ClipData Data { get; set; }
+
+    internal void Subscribe(object onClipboardChanged)
+    {
+      throw new NotImplementedException();
+    }
   }
 
   public class ClipboardChangedEvent : PubSubEvent<ClipboardChangedData>

@@ -8,18 +8,16 @@
              mc:Ignorable="d" 
              Height="86" Width="164"
              d:DataContext ="{d:DesignInstance {x:Type designTime:ClipCardViewModelDesignTime}, IsDesignTimeCreatable=True}">
-  <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="{StaticResource MahApps.Brushes.Control.Border}" BorderThickness="1" Margin="5">
-    <Grid x:Name="MainGrid" Background="{StaticResource MahApps.Brushes.Control.Background}" Margin="3">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="*" />
-        <RowDefinition Height="Auto" />
-      </Grid.RowDefinitions>
-      <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" 
-                 Text="{Binding StringPreview}" Grid.ColumnSpan="2" FontSize="11" LineHeight="13" LineStackingStrategy="BlockLineHeight" Margin="0,0,0,3"  />
-      <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" 
+  <Grid x:Name="MainGrid" Margin="3" Background="{DynamicResource MahApps.Brushes.Button.Square.Background.MouseOver}"  >
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" 
+                 Text="{Binding StringPreview}" Grid.ColumnSpan="2" FontSize="11" LineHeight="13" LineStackingStrategy="BlockLineHeight" Padding="4,2,4,2"  />
+    <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" 
                  TextWrapping="NoWrap" 
                  Grid.Row="1" 
-                 FontSize="11" Name="Path" Text="{Binding MetaInfo}"  HorizontalAlignment="Stretch"/>
-    </Grid>
-  </Border>
+                 FontSize="11" Name="Path" Text="{Binding MetaString}" HorizontalAlignment="Stretch" Background="{StaticResource MahApps.Brushes.Accent}" Padding="4,0,4,2" />
+  </Grid>
 </UserControl>

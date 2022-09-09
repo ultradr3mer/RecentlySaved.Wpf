@@ -16,7 +16,7 @@ namespace RecentlySaved.Wpf.ViewModels.Controls.DesignTime
 >  msgBox.setStandardButtons(QMessageBox::Ok);
 >  msgBox.setDefaultButton(QMessageBox::Ok);
 >  msgBox.exec();";
-      this.MetaInfo = @"Notepad";
+      this.MetaString = @"Notepad";
     }
 
   }

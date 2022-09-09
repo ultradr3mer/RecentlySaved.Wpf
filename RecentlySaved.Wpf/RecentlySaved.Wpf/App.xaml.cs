@@ -35,7 +35,7 @@ namespace RecentlySaved.Wpf
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
       containerRegistry.RegisterManySingleton<SettingsRepository>();
-      containerRegistry.RegisterManySingleton<FileRepository>();
+      containerRegistry.RegisterManySingleton<PersistantRepository>();
       containerRegistry.RegisterManySingleton<FileWatcher>();
 
       ViewModelLocationProvider.SetDefaultViewModelFactory((type) => this.Container.Resolve(type));

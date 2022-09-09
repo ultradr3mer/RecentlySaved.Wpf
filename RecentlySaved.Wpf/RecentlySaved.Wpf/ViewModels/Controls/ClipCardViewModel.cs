@@ -9,7 +9,7 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
   {
     public string StringPreview { get; set; }
     public string Content { get; set; }
-    public string MetaInfo { get; set; }
+    public string MetaString { get; set; }
 
     protected string GeneratePreview(string content)
     {
@@ -23,6 +23,7 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
     protected override void OnReadingDataModel(ClipData data)
     {
       this.StringPreview = this.GeneratePreview(data.Content);
+      this.MetaString = data.Datum.ToString("d") + " " + data.ProcessName;
     }
   }
 }

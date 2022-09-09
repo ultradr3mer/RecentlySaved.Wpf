@@ -21,16 +21,22 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
     private readonly IUnityContainer container;
 
-    public ClipboardHistFragmentViewModel(IEventAggregator eventAggregator, IUnityContainer container)
+    public ClipboardHistFragmentViewModel(IEventAggregator eventAggregator, IUnityContainer container, PersistantRepository persistantRepository)
     {
-      eventAggregator.GetEvent<ClipboardChangedEvent>().Subscribe(this.OnClipCreatedChanged, ThreadOption.UIThread);
       this.container = container;
+      foreach (var item in persistantRepository.GetRecentClipboardData())
+      {
+        var vm = this.container.Resolve<ClipCardViewModel>().GetWithDataModel(item);
+        Items.Insert(0, vm);
+      }
+
+      eventAggregator.GetEvent<ClipboardChangedEvent>().Subscribe(this.OnClipCreatedChanged, ThreadOption.UIThread);
     }
 
     private void OnClipCreatedChanged(ClipboardChangedData data)
     {
       var vm = this.container.Resolve<ClipCardViewModel>().GetWithDataModel(data.Data);
-      Items.Add(vm);
+      Items.Insert(0, vm);
     }
   }
 }

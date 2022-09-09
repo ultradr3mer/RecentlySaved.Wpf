@@ -9,23 +9,36 @@ using System.IO;
 
 namespace RecentlySaved.Wpf.Repositories
 {
-  public class FileRepository
+  public class PersistantRepository
   {
     private readonly string fileName = "fileRepo.json";
     private readonly Dictionary<string, FileData> recentFiles = new Dictionary<string, FileData>();
+    private readonly List<ClipData> clipboardData = new List<ClipData>();
     private readonly object lockObj = new object();
 
-    public FileRepository(IEventAggregator eventAggregator)
+    public PersistantRepository(IEventAggregator eventAggregator)
     {
       if (File.Exists(this.fileName))
       {
         string json = File.ReadAllText(this.fileName);
-        this.recentFiles = JsonConvert.DeserializeObject<FileRepoData>(json)?.RecentFiles ?? recentFiles;
+        var data = JsonConvert.DeserializeObject<FileRepoData>(json);
+        this.recentFiles = data?.RecentFiles ?? recentFiles;
+        this.clipboardData = data?.ClipboardData ?? clipboardData;
       }
 
       eventAggregator.GetEvent<FileCreatedChangedEvent>().Subscribe(this.OnFileCreatedChanged);
       eventAggregator.GetEvent<FileDeletedEvent>().Subscribe(this.OnFileDeleted);
       eventAggregator.GetEvent<FileRenamedEvent>().Subscribe(this.OnFileRenamed);
+      eventAggregator.GetEvent<ClipboardChangedEvent>().Subscribe(this.OnClipboardChanged);
+    }
+
+    private void OnClipboardChanged(ClipboardChangedData data)
+    {
+      lock (lockObj)
+      {
+        clipboardData.Add(data.Data);
+        this.OnFilesChanged();
+      }
     }
 
     private void OnFileRenamed(FileRenamedData data)
@@ -75,9 +88,17 @@ namespace RecentlySaved.Wpf.Repositories
       }
     }
 
+    internal List<ClipData> GetRecentClipboardData()
+    {
+      lock (lockObj)
+      {
+        return this.clipboardData.OrderByDescending(o => o.Datum).ToList();
+      }
+    }
+
     private void OnFilesChanged()
     {
-      string json = JsonConvert.SerializeObject(new FileRepoData { RecentFiles = recentFiles });
+      string json = JsonConvert.SerializeObject(new FileRepoData { RecentFiles = recentFiles, ClipboardData = clipboardData });
 
       File.WriteAllText(this.fileName, json);
     }

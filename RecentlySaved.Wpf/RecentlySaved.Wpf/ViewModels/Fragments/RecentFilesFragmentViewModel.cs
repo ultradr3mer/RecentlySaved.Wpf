@@ -23,7 +23,7 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
     private readonly IUnityContainer container;
 #pragma warning restore IDE0044 // Add readonly modifier
 
-    public RecentFilesFragmentViewModel(IEventAggregator eventAggregator, FileRepository fileRepository, FileWatcher watcher, IUnityContainer container)
+    public RecentFilesFragmentViewModel(IEventAggregator eventAggregator, PersistantRepository fileRepository, FileWatcher watcher, IUnityContainer container)
     {
       this.watcher = watcher;
       this.container = container;

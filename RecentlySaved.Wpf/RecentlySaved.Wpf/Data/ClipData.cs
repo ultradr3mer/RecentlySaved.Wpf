@@ -9,6 +9,7 @@ namespace RecentlySaved.Wpf.Data
   public class ClipData
   {
     public string Content { get; set; }
-    public string MetaInfo { get; set; }
+    public string ProcessName { get; set; }
+    public DateTime Datum { get; set; }
   }
 }
