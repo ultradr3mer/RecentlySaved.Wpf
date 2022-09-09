@@ -12,9 +12,8 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
   public class FileCardViewModelBase : BaseViewModel<FileData>
   {
     public string FileName { get; set; }
-
     public string FilePath { get; set; }
-
+    public string FullPath { get; set; }
     public DateTime Date { get; set; }
   }
 
@@ -22,7 +21,8 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
   {
     protected override void OnReadingDataModel(FileData data)
     {
-      //this.Folder = Path.GetFileName(data.FilePath);
+      this.FileName = Path.GetFileName(data.FullPath);
+      this.FilePath = Path.GetDirectoryName(data.FullPath);
     }
   }
 }

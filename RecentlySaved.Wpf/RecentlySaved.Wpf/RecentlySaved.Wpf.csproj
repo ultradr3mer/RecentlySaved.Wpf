@@ -113,7 +113,9 @@
     <Compile Include="Data\FileData.cs" />
     <Compile Include="Data\FileRepoData.cs" />
     <Compile Include="Data\SettingsData.cs" />
-    <Compile Include="Events\RecentFilesChangedEvent.cs" />
+    <Compile Include="Events\FileCreatedChangedEvent.cs" />
+    <Compile Include="Events\FileDeletedEvent.cs" />
+    <Compile Include="Events\FileRenamedEvent.cs" />
     <Compile Include="Extensions\BaseViewModelExtensions.cs" />
     <Compile Include="Repositories\FileRepository.cs" />
     <Compile Include="Repositories\SettingsRepository.cs" />

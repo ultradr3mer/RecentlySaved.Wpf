@@ -8,8 +8,7 @@ namespace RecentlySaved.Wpf.Data
 {
   public class FileData
   {
-    public string FileName { get; set; }
-    public string FilePath { get; set; }
+    public string FullPath { get; set; }
     public DateTime Date { get; set; }
   }
 }

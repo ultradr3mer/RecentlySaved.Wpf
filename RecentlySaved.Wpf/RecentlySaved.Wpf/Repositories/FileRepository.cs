@@ -12,7 +12,6 @@ namespace RecentlySaved.Wpf.Repositories
   public class FileRepository
   {
     private readonly string fileName = "fileRepo.json";
-    private readonly RecentFilesChangedEvent fileChangedEvent;
     private readonly Dictionary<string, FileData> recentFiles = new Dictionary<string, FileData>();
     private readonly object lockObj = new object();
 
@@ -24,18 +23,47 @@ namespace RecentlySaved.Wpf.Repositories
         this.recentFiles = JsonConvert.DeserializeObject<FileRepoData>(json)?.RecentFiles ?? recentFiles;
       }
 
-      this.fileChangedEvent = eventAggregator.GetEvent<RecentFilesChangedEvent>();
-
+      eventAggregator.GetEvent<FileCreatedChangedEvent>().Subscribe(this.OnFileCreatedChanged);
+      eventAggregator.GetEvent<FileDeletedEvent>().Subscribe(this.OnFileDeleted);
+      eventAggregator.GetEvent<FileRenamedEvent>().Subscribe(this.OnFileRenamed);
     }
 
-    internal void DeleteFile(string fullPath)
+    private void OnFileRenamed(FileRenamedData data)
     {
       lock (lockObj)
       {
-        if (this.recentFiles.Remove(fullPath))
+        this.recentFiles.Remove(data.OldData.FullPath);
+        this.recentFiles.Add(data.NewData.FullPath, data.NewData);
+
+        this.OnFilesChanged();
+      }
+    }
+
+    private void OnFileDeleted(FileDeletedEventData data)
+    {
+      lock (lockObj)
+      {
+        if (this.recentFiles.Remove(data.DeletedFile.FullPath))
         {
           this.OnFilesChanged();
         }
+      }
+    }
+
+    private void OnFileCreatedChanged(FileCreatedChangedData data)
+    {
+      lock (lockObj)
+      {
+        if (this.recentFiles.TryGetValue(data.CreatedChangedData.FullPath, out FileData existingData))
+        {
+          existingData.Date = DateTime.Now;
+        }
+        else
+        {
+          this.recentFiles.Add(data.CreatedChangedData.FullPath, data.CreatedChangedData);
+        }
+
+        this.OnFilesChanged();
       }
     }
 
@@ -47,58 +75,11 @@ namespace RecentlySaved.Wpf.Repositories
       }
     }
 
-    internal void RenameFile(string oldFullPath, string fullPath)
-    {
-      lock (lockObj)
-      {
-        if (this.recentFiles.TryGetValue(oldFullPath, out FileData data))
-        {
-          this.recentFiles.Remove(oldFullPath);
-          this.recentFiles.Add(fullPath, data);
-        }
-        else
-        {
-          this.recentFiles.Add(fullPath, new FileData()
-          {
-            FilePath = Path.GetDirectoryName(fullPath),
-            FileName = Path.GetFileName(fullPath),
-            Date = DateTime.Now
-          });
-        }
-
-        this.OnFilesChanged();
-      }
-    }
-
-    internal void CreateOrUpdate(string fullPath)
-    {
-      lock (lockObj)
-      {
-        if (this.recentFiles.TryGetValue(fullPath, out FileData data))
-        {
-          data.Date = DateTime.Now;
-        }
-        else
-        {
-          this.recentFiles.Add(fullPath, new FileData()
-          {
-            FilePath = Path.GetDirectoryName(fullPath),
-            FileName = Path.GetFileName(fullPath),
-            Date = DateTime.Now
-          });
-        }
-
-        this.OnFilesChanged();
-      }
-    }
-
     private void OnFilesChanged()
     {
       string json = JsonConvert.SerializeObject(new FileRepoData { RecentFiles = recentFiles });
 
       File.WriteAllText(this.fileName, json);
-
-      this.fileChangedEvent.Publish(new RecentFilesChangedData() { repository = this });
     }
   }
 }

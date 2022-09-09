@@ -1,4 +1,5 @@
 ﻿using Prism.Events;
+using RecentlySaved.Wpf.Data;
 using RecentlySaved.Wpf.Repositories;
 using System;
 using System.Collections.Generic;
@@ -8,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace RecentlySaved.Wpf.Events
 {
-  public class RecentFilesChangedData
+  public class FileCreatedChangedData
   {
-    public FileRepository repository { get; set; }
+    public FileData CreatedChangedData { get; set; }
   }
 
-  internal class RecentFilesChangedEvent : PubSubEvent<RecentFilesChangedData>
+  public class FileCreatedChangedEvent : PubSubEvent<FileCreatedChangedData>
   {
   }
 }

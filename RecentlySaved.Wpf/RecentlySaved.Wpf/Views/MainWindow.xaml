@@ -20,6 +20,15 @@
       <ColumnDefinition Width="10"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
-    <ContentControl Grid.Row="0" prism:RegionManager.RegionName="RecentFilesRegion" />
+    <Grid.RowDefinitions>
+      <RowDefinition Height="30"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Label Content="Recent Files"/>
+    <ContentControl Grid.Row="1" prism:RegionManager.RegionName="RecentFilesRegion" />
+    <Rectangle Width="1" Grid.Column="1" Grid.RowSpan="2" Fill="{StaticResource MahApps.Brushes.Control.Border}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+    <Rectangle Width="1" Grid.Column="3" Grid.RowSpan="2" Fill="{StaticResource MahApps.Brushes.Control.Border}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+    <Rectangle Width="1" Grid.Column="5" Grid.RowSpan="2" Fill="{StaticResource MahApps.Brushes.Control.Border}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+
   </Grid>
 </mah:MetroWindow>

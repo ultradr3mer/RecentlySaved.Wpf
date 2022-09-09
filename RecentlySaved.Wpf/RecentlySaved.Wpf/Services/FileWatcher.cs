@@ -1,4 +1,7 @@
-﻿using RecentlySaved.Wpf.Repositories;
+﻿using Prism.Events;
+using RecentlySaved.Wpf.Data;
+using RecentlySaved.Wpf.Events;
+using RecentlySaved.Wpf.Repositories;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,10 +11,18 @@ namespace RecentlySaved.Wpf
   public class FileWatcher : IDisposable
   {
     private List<FileSystemWatcher> watcherList;
+    private FileCreatedChangedEvent fileCreatedChangedEvent;
+    private FileDeletedEvent fileDeletedEvent;
+    private FileRenamedEvent fileRenamedEvent;
     private readonly FileRepository fileRepository;
 
-    public FileWatcher(SettingsRepository settingsRepository, FileRepository fileRepository)
+    public FileWatcher(SettingsRepository settingsRepository, FileRepository fileRepository, IEventAggregator eventAggregator)
     {
+
+      this.fileCreatedChangedEvent = eventAggregator.GetEvent<FileCreatedChangedEvent>();
+      this.fileDeletedEvent = eventAggregator.GetEvent<FileDeletedEvent>();
+      this.fileRenamedEvent = eventAggregator.GetEvent<FileRenamedEvent>();
+
       this.watcherList = new List<FileSystemWatcher>();
 
       foreach (string path in settingsRepository.PathsToWatch)
@@ -52,20 +63,26 @@ namespace RecentlySaved.Wpf
         return;
       }
       System.Console.WriteLine($"Changed: {e.FullPath}");
-      this.fileRepository.CreateOrUpdate(e.FullPath);
+
+      var data = new FileData() { FullPath= e.FullPath, Date = DateTime.Now };
+      fileCreatedChangedEvent.Publish(new FileCreatedChangedData { CreatedChangedData = data });
     }
 
     private void OnCreated(object sender, FileSystemEventArgs e)
     {
       string value = $"Created: {e.FullPath}";
       System.Console.WriteLine(value);
-      this.fileRepository.CreateOrUpdate(e.FullPath);
+
+      var data = new FileData() { FullPath = e.FullPath, Date = DateTime.Now };
+      fileCreatedChangedEvent.Publish(new FileCreatedChangedData { CreatedChangedData = data });
     }
 
     private void OnDeleted(object sender, FileSystemEventArgs e)
     {
       System.Console.WriteLine($"Deleted: {e.FullPath}");
-      this.fileRepository.DeleteFile(e.FullPath);
+
+      var data = new FileData() { FullPath = e.FullPath, Date = DateTime.Now };
+      fileDeletedEvent.Publish(new FileDeletedEventData { DeletedFile = data });
     }
 
     private void OnRenamed(object sender, RenamedEventArgs e)
@@ -73,7 +90,10 @@ namespace RecentlySaved.Wpf
       System.Console.WriteLine($"Renamed:");
       System.Console.WriteLine($"    Old: {e.OldFullPath}");
       System.Console.WriteLine($"    New: {e.FullPath}");
-      this.fileRepository.RenameFile(e.OldFullPath, e.FullPath);
+
+      var oldData = new FileData() { FullPath = e.OldFullPath };
+      var newData = new FileData() { FullPath = e.FullPath, Date = DateTime.Now };
+      fileRenamedEvent.Publish(new FileRenamedData { OldData = oldData, NewData = newData });
     }
 
     private void OnError(object sender, ErrorEventArgs e) =>

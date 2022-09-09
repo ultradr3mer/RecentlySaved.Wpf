@@ -32,49 +32,52 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
     {
       this.watcher = watcher;
       this.container = container;
-      this.UpdateRecentFiles(fileRepository.GetRecentFiles());
 
-      eventAggregator.GetEvent<RecentFilesChangedEvent>().Subscribe(this.OnRecentFilesChanged, ThreadOption.UIThread);
-    }
+      eventAggregator.GetEvent<FileCreatedChangedEvent>().Subscribe(this.OnFileCreatedChanged, ThreadOption.UIThread);
+      eventAggregator.GetEvent<FileDeletedEvent>().Subscribe(this.OnFileDeleted, ThreadOption.UIThread);
+      eventAggregator.GetEvent<FileRenamedEvent>().Subscribe(this.OnFileRenamed, ThreadOption.UIThread);
 
-    private void UpdateRecentFiles(IEnumerable<FileData> files)
-    {
-      //int currentIndex = 0;
-
-      //List<FileCardViewModel> deadViewModels = this.Items.ToList();
-
-      //foreach (var singleFile in files)
-      //{
-      //  var vm = this.Items.FirstOrDefault(o => o.FilePath == singleFile.FilePath && o.FileName == singleFile.FileName);
-      //  if (vm != null)
-      //  {
-      //    vm.SetDataModel(o);
-      //    deadViewModels.Remove(vm);
-      //  }
-
-      //  vm = this.container.Resolve<FileCardViewModel>().GetWithDataModel(singleFile);
-      //  Items.Add(vm);
-      //  deadViewModels.Remove(vm);
-      //}
-
-      //foreach (var vm in deadViewModels)
-      //{
-      //  this.Items.Remove(vm);
-      //}
-
-      //this.Items.(o => o.Date);
-
-      this.Items.Clear();
-      foreach (FileData singleFile in files)
+      foreach (FileData singleFile in fileRepository.GetRecentFiles())
       {
         this.Items.Add(this.container.Resolve<FileCardViewModel>().GetWithDataModel(singleFile));
       }
-      
     }
 
-    private void OnRecentFilesChanged(RecentFilesChangedData data)
+    private void OnFileRenamed(FileRenamedData data)
     {
-      this.UpdateRecentFiles(data.repository.GetRecentFiles());
+      var vm = this.container.Resolve<FileCardViewModel>().GetWithDataModel(data.NewData);
+      this.InsertDistinct(vm, data.OldData.FullPath, data.NewData.FullPath);
+    }
+
+    private void OnFileDeleted(FileDeletedEventData data)
+    {
+      foreach (var item in this.Items.ToList())
+      {
+        if (item.FullPath == data.DeletedFile.FullPath)
+        {
+          this.Items.Remove(item);
+        }
+      }
+    }
+
+    private void OnFileCreatedChanged(FileCreatedChangedData data)
+    {
+      var vm = this.container.Resolve<FileCardViewModel>().GetWithDataModel(data.CreatedChangedData);
+      this.InsertDistinct(vm, data.CreatedChangedData.FullPath);
+    }
+
+
+    private void InsertDistinct(FileCardViewModel vm, params string[] replacePaths)
+    {
+      foreach (var item in this.Items.ToList())
+      {
+        if (replacePaths.Contains(item.FullPath))
+        {
+          this.Items.Remove(item);
+        }
+      }
+
+      this.Items.Insert(0, vm);
     }
   }
 }
