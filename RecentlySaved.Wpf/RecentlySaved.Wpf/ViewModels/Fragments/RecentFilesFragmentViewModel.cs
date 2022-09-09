@@ -4,13 +4,8 @@ using RecentlySaved.Wpf.Events;
 using RecentlySaved.Wpf.Extensions;
 using RecentlySaved.Wpf.Repositories;
 using RecentlySaved.Wpf.ViewModels.Controls;
-using RecentlySaved.Wpf.ViewModels.Fragments.DesignTime;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Unity;
 
 namespace RecentlySaved.Wpf.ViewModels.Fragments
@@ -65,7 +60,6 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
       var vm = this.container.Resolve<FileCardViewModel>().GetWithDataModel(data.CreatedChangedData);
       this.InsertDistinct(vm, data.CreatedChangedData.FullPath);
     }
-
 
     private void InsertDistinct(FileCardViewModel vm, params string[] replacePaths)
     {

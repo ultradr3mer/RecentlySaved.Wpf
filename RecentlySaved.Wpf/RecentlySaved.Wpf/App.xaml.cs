@@ -21,7 +21,6 @@ namespace RecentlySaved.Wpf
   {
     #region Fields
 
-    public const string RegionName = "MainRegion";
 
     #endregion Fields
 

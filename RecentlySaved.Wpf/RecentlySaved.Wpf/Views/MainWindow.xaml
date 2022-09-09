@@ -27,6 +27,8 @@
     <Label Content="Recent Files"/>
     <ContentControl Grid.Row="1" prism:RegionManager.RegionName="RecentFilesRegion" />
     <Rectangle Width="1" Grid.Column="1" Grid.RowSpan="2" Fill="{StaticResource MahApps.Brushes.Control.Border}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+    <Label Grid.Row="0" Grid.Column="2" Content="Clipoard History"/>
+    <ContentControl Grid.Column="2" Grid.Row="1" prism:RegionManager.RegionName="ClipboardHistRegion" />
     <Rectangle Width="1" Grid.Column="3" Grid.RowSpan="2" Fill="{StaticResource MahApps.Brushes.Control.Border}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
     <Rectangle Width="1" Grid.Column="5" Grid.RowSpan="2" Fill="{StaticResource MahApps.Brushes.Control.Border}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
 

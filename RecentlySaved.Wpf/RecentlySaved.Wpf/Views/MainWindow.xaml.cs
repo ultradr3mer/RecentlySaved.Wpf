@@ -1,5 +1,7 @@
 ﻿
+using AdvancedClipboard.Wpf.Services;
 using MahApps.Metro.Controls;
+using Prism.Events;
 using Prism.Regions;
 using RecentlySaved.Wpf.Views.Fragments;
 using System;
@@ -25,12 +27,27 @@ namespace RecentlySaved.Wpf.Views
   public partial class MainWindow : MetroWindow
   {
     public const string RecentFilesRegion = "RecentFilesRegion";
+    public const string ClipboardHistRegion = "ClipboardHistRegion";
 
-    public MainWindow(IRegionManager regionManager, IUnityContainer container)
+    private readonly IEventAggregator eventAggregator;
+    private readonly ClipboardWatcher clipboardWatcher;
+
+    public MainWindow(IRegionManager regionManager, IUnityContainer container, IEventAggregator eventAggregator, ClipboardWatcher clipboardWatcher)
     {
       InitializeComponent();
 
       regionManager.RegisterViewWithRegion(MainWindow.RecentFilesRegion, () => container.Resolve<RecentFilesFragment>());
+      regionManager.RegisterViewWithRegion(MainWindow.ClipboardHistRegion, () => container.Resolve<ClipboardHistFragment>());
+
+      var clip = new WpfClipboardMonitor.ClipboardMonitor(this, true);
+      clip.ClipboardUpdate += this.Clip_ClipboardUpdate;
+      this.eventAggregator = eventAggregator;
+      this.clipboardWatcher = clipboardWatcher;
+    }
+
+    private void Clip_ClipboardUpdate(object sender, EventArgs e)
+    {
+      this.clipboardWatcher.Notify();
     }
   }
 }
