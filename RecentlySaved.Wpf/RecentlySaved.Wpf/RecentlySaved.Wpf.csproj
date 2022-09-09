@@ -115,6 +115,7 @@
     </Compile>
     <Compile Include="Composite\BaseViewModel.cs" />
     <Compile Include="Composite\BaseViewModelOfT.cs" />
+    <Compile Include="Data\ClipData.cs" />
     <Compile Include="Data\FileData.cs" />
     <Compile Include="Data\FileRepoData.cs" />
     <Compile Include="Data\SettingsData.cs" />
@@ -127,13 +128,20 @@
     <Compile Include="Repositories\SettingsRepository.cs" />
     <Compile Include="Services\ClipboardWatcher.cs" />
     <Compile Include="Services\FileWatcher.cs" />
+    <Compile Include="ViewModels\Controls\DesignTime\ClipCardViewModelDesignTime.cs" />
     <Compile Include="ViewModels\Controls\DesignTime\FileCardViewModelDesignTime.cs" />
+    <Compile Include="ViewModels\Controls\ClipCardViewModel.cs" />
     <Compile Include="ViewModels\Controls\FileCardViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\MainWindowViewModelDesignTime.cs" />
     <Compile Include="ViewModels\EntryItemViewModel.cs" />
+    <Compile Include="ViewModels\Fragments\DesignTime\ClipHistFragmentViewModelDesignTime.cs" />
     <Compile Include="ViewModels\Fragments\DesignTime\RecentFilesFragmentViewModelDesignTime.cs" />
+    <Compile Include="ViewModels\Fragments\ClipboardHistFragmentViewModel.cs" />
     <Compile Include="ViewModels\Fragments\RecentFilesFragmentViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Views\Controls\ClipCard.xaml.cs">
+      <DependentUpon>ClipCard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\FileCard.xaml.cs">
       <DependentUpon>FileCard.xaml</DependentUpon>
     </Compile>
@@ -176,6 +184,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\Controls\ClipCard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Controls\FileCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

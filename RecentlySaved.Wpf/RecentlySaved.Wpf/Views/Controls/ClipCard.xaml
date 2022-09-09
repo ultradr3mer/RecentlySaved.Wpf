@@ -1,23 +1,25 @@
-﻿<UserControl x:Class="RecentlySaved.Wpf.Views.Controls.FileCard"
+﻿<UserControl x:Class="RecentlySaved.Wpf.Views.Controls.ClipCard"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RecentlySaved.Wpf.Views.Controls"
              xmlns:designTime="clr-namespace:RecentlySaved.Wpf.ViewModels.Controls.DesignTime"
              mc:Ignorable="d" 
              Height="86" Width="164"
-             d:DataContext ="{d:DesignInstance {x:Type designTime:FileCardViewModelDesignTime}, IsDesignTimeCreatable=True}">
+             d:DataContext ="{d:DesignInstance {x:Type designTime:ClipCardViewModelDesignTime}, IsDesignTimeCreatable=True}">
   <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="{StaticResource MahApps.Brushes.Control.Border}" BorderThickness="1" Margin="5">
     <Grid x:Name="MainGrid" Background="{StaticResource MahApps.Brushes.Control.Background}" Margin="3">
       <Grid.RowDefinitions>
         <RowDefinition Height="*" />
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
-      <Label  Content="{Binding FileName}" Grid.ColumnSpan="2" />
+      <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" 
+                 Text="{Binding StringPreview}" Grid.ColumnSpan="2" FontSize="11" LineHeight="13" LineStackingStrategy="BlockLineHeight" Margin="0,0,0,3"  />
       <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" 
                  TextWrapping="NoWrap" 
                  Grid.Row="1" 
-                 FontSize="10" Name="Path" Text="..." HorizontalAlignment="Stretch"/>
+                 FontSize="11" Name="Path" Text="{Binding MetaInfo}"  HorizontalAlignment="Stretch"/>
     </Grid>
   </Border>
 </UserControl>

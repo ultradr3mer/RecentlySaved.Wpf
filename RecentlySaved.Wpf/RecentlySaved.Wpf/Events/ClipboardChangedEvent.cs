@@ -1,4 +1,5 @@
 ﻿using Prism.Events;
+using RecentlySaved.Wpf.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace RecentlySaved.Wpf.Events
 {
   public class ClipboardChangedData
   {
-    public string TextContent { get; set; }
+    public ClipData Data { get; set; }
   }
 
   public class ClipboardChangedEvent : PubSubEvent<ClipboardChangedData>
