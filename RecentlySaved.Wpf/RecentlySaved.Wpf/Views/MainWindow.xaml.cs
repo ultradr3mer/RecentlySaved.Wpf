@@ -46,14 +46,21 @@ namespace RecentlySaved.Wpf.Views
       regionManager.RegisterViewWithRegion(MainWindow.RecentFilesRegion, () => container.Resolve<RecentFilesFragment>());
       regionManager.RegisterViewWithRegion(MainWindow.ClipboardHistRegion, () => container.Resolve<ClipboardHistFragment>());
       regionManager.RegisterViewWithRegion(MainWindow.Preview, () => container.Resolve<UserControl>());
-      regionManager.RegisterViewWithRegion(MainWindow.Preview, () => container.Resolve<ClipPreviewWindow>());
+      regionManager.RegisterViewWithRegion(MainWindow.Preview, () => container.Resolve<ClipPreviewFragment>());
+      regionManager.RegisterViewWithRegion(MainWindow.Preview, () => container.Resolve<FilePreviewFragment>());
 
       WpfClipboardMonitor.ClipboardMonitor clip = new WpfClipboardMonitor.ClipboardMonitor(this, true);
       clip.ClipboardUpdate += this.Clip_ClipboardUpdate;
       this.eventAggregator = eventAggregator;
       this.clipboardWatcher = clipboardWatcher;
       eventAggregator.GetEvent<ClipboardSelectionChangedEvent>().Subscribe(this.OnSelectedClipboardItemChanged);
+      eventAggregator.GetEvent<FileSelectionChangedEvent>().Subscribe(this.OnSelectedFileChanged);
       this.deactivatedEvent = eventAggregator.GetEvent<MainWindowDeactivatedEvent>();
+    }
+
+    private void OnSelectedFileChanged(FileSelectionChangedData obj)
+    {
+      regionManager.RequestNavigate(MainWindow.Preview, new Uri(nameof(FilePreviewFragment), UriKind.Relative));
     }
 
     protected override void OnSourceInitialized(EventArgs e)
@@ -89,7 +96,7 @@ namespace RecentlySaved.Wpf.Views
 
     private void OnSelectedClipboardItemChanged(ClipboardSelectionChangedData data)
     {
-      regionManager.RequestNavigate(MainWindow.Preview, new Uri(nameof(ClipPreviewWindow), UriKind.Relative));
+      regionManager.RequestNavigate(MainWindow.Preview, new Uri(nameof(ClipPreviewFragment), UriKind.Relative));
     }
 
     private void Clip_ClipboardUpdate(object sender, EventArgs e)

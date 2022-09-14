@@ -7,20 +7,15 @@
              mc:Ignorable="d" 
              Height="43" Width="164"
              d:DataContext ="{d:DesignInstance {x:Type designTime:FileCardViewModelDesignTime}, IsDesignTimeCreatable=True}">
-  <Border>
-    <Border.Effect>
-      <DropShadowEffect Opacity="0.2" Color="#7F000000"/>
-    </Border.Effect>
-    <Grid x:Name="MainGrid" Background="{DynamicResource MahApps.Brushes.Button.Square.Background.MouseOver}" Margin="3">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="*" />
-        <RowDefinition Height="Auto" />
-      </Grid.RowDefinitions>
-      <Label  Content="{Binding FileName}" Grid.ColumnSpan="2" Padding="4,2,4,2" />
-      <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" 
+  <Grid x:Name="MainGrid" Background="{DynamicResource MahApps.Brushes.Button.Square.Background.MouseOver}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <Label  Content="{Binding FileName}" Grid.ColumnSpan="2" Padding="4,2,4,2" />
+    <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" 
                  TextWrapping="NoWrap" 
                  Grid.Row="1" 
                  FontSize="10" Name="Path" Text="..." HorizontalAlignment="Stretch" Background="{StaticResource MahApps.Brushes.Accent}" Padding="4,0,4,2"/>
-    </Grid>
-  </Border>
+  </Grid>
 </UserControl>

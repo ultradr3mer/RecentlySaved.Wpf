@@ -27,8 +27,8 @@
     <Rectangle Width="1" Grid.Column="1"  Grid.RowSpan="2" Fill="{StaticResource MahApps.Brushes.Control.Border}" VerticalAlignment="Stretch" HorizontalAlignment="Center" Margin="0,20,0,20"/>
     <Label Grid.Row="0" Grid.Column="2" Content="Clipoard History"/>
     <ContentControl Grid.Column="2" Grid.Row="1" prism:RegionManager.RegionName="ClipboardHistRegion" UseLayoutRounding="True" />
+    <Rectangle Grid.Column="3" Grid.ColumnSpan="2" Grid.RowSpan="2" Fill="{StaticResource MahApps.Brushes.Button.Square.Background.MouseOver}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
     <Rectangle Width="1" Grid.Column="3"  Grid.RowSpan="2" Fill="{StaticResource MahApps.Brushes.Control.Border}" VerticalAlignment="Stretch" HorizontalAlignment="Center" Margin="0,20,0,20"/>
-    <Rectangle Grid.Column="4" Grid.RowSpan="2" Fill="{StaticResource MahApps.Brushes.Button.Square.Background.MouseOver}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
     <ContentControl Grid.Column="4" Grid.Row="1" prism:RegionManager.RegionName="Preview" UseLayoutRounding="True" />
     <Label Grid.Row="0" Grid.Column="4" Content="Preview"/>
   </Grid>

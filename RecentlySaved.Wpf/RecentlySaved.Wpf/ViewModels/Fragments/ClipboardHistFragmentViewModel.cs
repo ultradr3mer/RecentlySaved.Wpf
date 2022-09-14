@@ -37,9 +37,15 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
       eventAggregator.GetEvent<ClipboardChangedEvent>().Subscribe(this.OnClipCreatedChanged, ThreadOption.UIThread);
       eventAggregator.GetEvent<MainWindowDeactivatedEvent>().Subscribe(this.OnDeactivated);
+      eventAggregator.GetEvent<FileSelectionChangedEvent>().Subscribe(this.OnFileSelectionChanged);
       this.selectionChangedEvent = eventAggregator.GetEvent<ClipboardSelectionChangedEvent>();
 
       this.PropertyChanged += this.ClipboardHistFragmentViewModel_PropertyChanged;
+    }
+
+    private void OnFileSelectionChanged(FileSelectionChangedData data)
+    {
+      this.SelectedItem = null;
     }
 
     private void ReadItems()

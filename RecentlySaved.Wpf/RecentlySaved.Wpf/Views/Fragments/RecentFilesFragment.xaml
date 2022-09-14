@@ -10,16 +10,24 @@
               xmlns:prism="http://prismlibrary.com/" xmlns:Controls="clr-namespace:RecentlySaved.Wpf.Views.Controls"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext ="{d:DesignInstance {x:Type designTime:RecentFilesFragmentViewModelDesignTime}, IsDesignTimeCreatable=True}">
-    <ItemsControl ItemsSource="{Binding Items}">
-      <ItemsControl.ItemsPanel>
-        <ItemsPanelTemplate>
-          <WrapPanel />
-        </ItemsPanelTemplate>
-      </ItemsControl.ItemsPanel>
-      <ItemsControl.ItemTemplate>
-        <DataTemplate>
-          <Controls:FileCard/>
-        </DataTemplate>
-      </ItemsControl.ItemTemplate>
-    </ItemsControl>
+  <ListView ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+    <ListView.ItemsPanel >
+      <ItemsPanelTemplate>
+        <WrapPanel />
+      </ItemsPanelTemplate>
+    </ListView.ItemsPanel>
+    <ListView.ItemContainerStyle>
+      <Style TargetType="ListViewItem">
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Margin" Value="1"/>
+        <Setter Property="Padding" Value="0"/>
+      </Style>
+    </ListView.ItemContainerStyle>
+    <ListView.ItemTemplate>
+      <DataTemplate>
+        <Controls:FileCard/>
+      </DataTemplate>
+    </ListView.ItemTemplate>
+  </ListView>
 </UserControl>

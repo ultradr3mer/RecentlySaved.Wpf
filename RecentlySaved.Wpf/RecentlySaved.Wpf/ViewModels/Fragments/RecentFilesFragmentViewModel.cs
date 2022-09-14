@@ -1,18 +1,21 @@
 ﻿using Prism.Events;
+using RecentlySaved.Wpf.Composite;
 using RecentlySaved.Wpf.Data;
 using RecentlySaved.Wpf.Events;
 using RecentlySaved.Wpf.Extensions;
 using RecentlySaved.Wpf.Repositories;
 using RecentlySaved.Wpf.ViewModels.Controls;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using Unity;
 
 namespace RecentlySaved.Wpf.ViewModels.Fragments
 {
-  public class RecentFilesFragementViewModelBase
+  public class RecentFilesFragementViewModelBase : BaseViewModel
   {
     public BindingList<FileCardViewModel> Items { get; set; } = new BindingList<FileCardViewModel>();
+    public FileCardViewModel SelectedItem { get; set; }
   }
 
   public class RecentFilesFragmentViewModel : RecentFilesFragementViewModelBase
@@ -20,6 +23,7 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
 #pragma warning disable IDE0044 // Add readonly modifier
     private FileWatcher watcher;
+    private FileSelectionChangedEvent selectionChangedEvent;
     private readonly IUnityContainer container;
 #pragma warning restore IDE0044 // Add readonly modifier
 
@@ -31,10 +35,33 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
       eventAggregator.GetEvent<FileCreatedChangedEvent>().Subscribe(this.OnFileCreatedChanged, ThreadOption.UIThread);
       eventAggregator.GetEvent<FileDeletedEvent>().Subscribe(this.OnFileDeleted, ThreadOption.UIThread);
       eventAggregator.GetEvent<FileRenamedEvent>().Subscribe(this.OnFileRenamed, ThreadOption.UIThread);
+      eventAggregator.GetEvent<ClipboardSelectionChangedEvent>().Subscribe(this.OnClipboardSelectionChanged, ThreadOption.UIThread);
+
+      this.selectionChangedEvent = eventAggregator.GetEvent<FileSelectionChangedEvent>();
 
       foreach (FileData singleFile in fileRepository.GetRecentFiles())
       {
         this.Items.Add(this.container.Resolve<FileCardViewModel>().GetWithDataModel(singleFile));
+      }
+
+      this.PropertyChanged += this.RecentFilesFragmentViewModel_PropertyChanged;
+    }
+
+    private void OnClipboardSelectionChanged(ClipboardSelectionChangedData obj)
+    {
+      this.SelectedItem = null;
+    }
+
+    private void RecentFilesFragmentViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+      if(e.PropertyName == nameof(SelectedItem))
+      {
+        if(this.SelectedItem == null)
+        {
+          return;
+        }
+
+        selectionChangedEvent.Publish(new FileSelectionChangedData() { Item = this.SelectedItem });
       }
     }
 

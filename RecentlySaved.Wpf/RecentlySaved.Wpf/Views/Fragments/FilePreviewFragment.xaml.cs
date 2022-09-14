@@ -13,16 +13,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RecentlySaved.Wpf.Views.Controls
+namespace RecentlySaved.Wpf.Views.Fragments
 {
   /// <summary>
-  /// Interaction logic for ClipPreviewWindow.xaml
+  /// Interaction logic for FilePreviewFragment.xaml
   /// </summary>
-  public partial class ClipPreviewWindow : UserControl
+  public partial class FilePreviewFragment : UserControl
   {
-    public ClipPreviewWindow()
+    public FilePreviewFragment()
     {
       InitializeComponent();
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+
     }
   }
 }
