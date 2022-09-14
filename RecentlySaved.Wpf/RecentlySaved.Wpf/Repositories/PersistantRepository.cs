@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Diagnostics;
 
 namespace RecentlySaved.Wpf.Repositories
 {
@@ -15,9 +16,14 @@ namespace RecentlySaved.Wpf.Repositories
     private readonly Dictionary<string, FileData> recentFiles = new Dictionary<string, FileData>();
     private readonly List<ClipData> clipboardData = new List<ClipData>();
     private readonly object lockObj = new object();
+    private DateTime nextSaveInterval = DateTime.MinValue;
+    private bool isDirty = false;
+    private string processName;
 
     public PersistantRepository(IEventAggregator eventAggregator)
     {
+      this.processName = Process.GetCurrentProcess().ProcessName;
+
       if (File.Exists(this.fileName))
       {
         string json = File.ReadAllText(this.fileName);
@@ -30,13 +36,28 @@ namespace RecentlySaved.Wpf.Repositories
       eventAggregator.GetEvent<FileDeletedEvent>().Subscribe(this.OnFileDeleted);
       eventAggregator.GetEvent<FileRenamedEvent>().Subscribe(this.OnFileRenamed);
       eventAggregator.GetEvent<ClipboardChangedEvent>().Subscribe(this.OnClipboardChanged);
+
+      nextSaveInterval = DateTime.Now.AddMinutes(30);
     }
 
     private void OnClipboardChanged(ClipboardChangedData data)
     {
       lock (lockObj)
       {
-        clipboardData.Add(data.Data);
+        var existing = clipboardData.FirstOrDefault(c => c.Content == data.Data.Content);
+        if(existing != null)
+        {
+          existing.Datum = DateTime.Now;
+          if(data.Data.ProcessName != this.processName)
+          {
+            existing.ProcessName = data.Data.ProcessName;
+          }
+        }
+        else
+        {
+          clipboardData.Add(data.Data);
+        }
+
         this.OnFilesChanged();
       }
     }
@@ -98,9 +119,32 @@ namespace RecentlySaved.Wpf.Repositories
 
     private void OnFilesChanged()
     {
-      string json = JsonConvert.SerializeObject(new FileRepoData { RecentFiles = recentFiles, ClipboardData = clipboardData });
+      nextSaveInterval = nextSaveInterval.AddMinutes(-3);
+      isDirty = true;
+      Save(false);
+    }
 
-      File.WriteAllText(this.fileName, json);
+    public void Save(bool force)
+    {
+      lock (lockObj)
+      {
+        if (!isDirty)
+        {
+          return;
+        }
+
+        if (!force && nextSaveInterval > DateTime.Now)
+        {
+          return;
+        }
+
+        string json = JsonConvert.SerializeObject(new FileRepoData { RecentFiles = recentFiles, ClipboardData = clipboardData });
+
+        File.WriteAllText(this.fileName, json);
+
+        nextSaveInterval = DateTime.Now.AddMinutes(30);
+        isDirty = true;
+      }
     }
   }
 }

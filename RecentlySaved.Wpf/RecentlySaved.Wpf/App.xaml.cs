@@ -1,4 +1,5 @@
-﻿using Prism.Ioc;
+﻿using AdvancedClipboard.Wpf.Services;
+using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Unity;
 using RecentlySaved.Wpf.Repositories;
@@ -37,6 +38,7 @@ namespace RecentlySaved.Wpf
       containerRegistry.RegisterManySingleton<SettingsRepository>();
       containerRegistry.RegisterManySingleton<PersistantRepository>();
       containerRegistry.RegisterManySingleton<FileWatcher>();
+      containerRegistry.RegisterManySingleton<ClipboardWatcher>();
 
       ViewModelLocationProvider.SetDefaultViewModelFactory((type) => this.Container.Resolve(type));
     }

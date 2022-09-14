@@ -10,16 +10,5 @@
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext ="{d:DesignInstance {x:Type designTime:ClipHistFragmentViewModelDesignTime}, IsDesignTimeCreatable=True}" >
-  <ItemsControl ItemsSource="{Binding Items}">
-    <ItemsControl.ItemsPanel>
-      <ItemsPanelTemplate>
-        <WrapPanel />
-      </ItemsPanelTemplate>
-    </ItemsControl.ItemsPanel>
-    <ItemsControl.ItemTemplate>
-      <DataTemplate>
-        <controls:ClipCard/>
-      </DataTemplate>
-    </ItemsControl.ItemTemplate>
-  </ItemsControl>
+  <controls:ClipCardList ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}"/>
 </UserControl>

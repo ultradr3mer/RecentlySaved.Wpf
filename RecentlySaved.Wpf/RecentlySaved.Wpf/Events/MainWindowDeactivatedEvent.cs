@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 
 namespace RecentlySaved.Wpf.Events
 {
-  public class ClipboardChangedData
+  public class MainWindowDeactivatedData
   {
-    public ClipData Data { get; set; }
   }
 
-  public class ClipboardChangedEvent : PubSubEvent<ClipboardChangedData>
+  public class MainWindowDeactivatedEvent : PubSubEvent<MainWindowDeactivatedData>
   {
 
   }

@@ -1,7 +1,7 @@
 ﻿using RecentlySaved.Wpf.ViewModels.Controls;
-using RecentlySaved.Wpf.ViewModels.Controls.DesignTime;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace RecentlySaved.Wpf.ViewModels.Fragments.DesignTime
 {
@@ -14,7 +14,10 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments.DesignTime
         new ClipCardViewModel { StringPreview = @">using System;
 >using System.Runtime.InteropServices;
 >using System.Windows;
->using System.Windows.Interop;", MetaString = @"Notepad 12.04.2022" },
+>using System.Windows.Interop;", Content = @"using System;
+using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Interop;", MetaString = @"Notepad 12.04.2022" },
         new ClipCardViewModel { StringPreview = @">QMessageBox msgBox;
 >msgBox.setText(""No Row Selected."");
 >msgBox.setInformativeText(""Please select a row that you want to generate an equation for."");
@@ -29,6 +32,8 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments.DesignTime
 >    variablesList.append(map<string, double>{{BASE_LETTER, r}});
 >  }", MetaString = @"Notepad 12.04.2022" }
       });
+
+      this.SelectedItem = this.Items.First();
     }
   }
 }

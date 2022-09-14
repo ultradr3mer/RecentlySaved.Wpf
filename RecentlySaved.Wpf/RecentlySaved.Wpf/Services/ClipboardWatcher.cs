@@ -23,8 +23,8 @@ namespace AdvancedClipboard.Wpf.Services
       public static extern int GetWindowText(int hWnd, StringBuilder text, int count);
     }
 
-    private ClipboardChangedEvent clipboardChanged;
-    string lastText = string.Empty;
+    private readonly ClipboardChangedEvent clipboardChanged;
+    private string lastText = string.Empty;
 
     public ClipboardWatcher(IEventAggregator eventAggregator)
     {
@@ -36,32 +36,39 @@ namespace AdvancedClipboard.Wpf.Services
       if (Clipboard.ContainsText())
       {
         string text = Clipboard.GetText(TextDataFormat.Text);
-        if (text != lastText)
+        if (text == lastText)
         {
-          string processName = this.GetForegroundProcessName();
-          var data = new ClipData() { Content = text, ProcessName = processName, Datum = DateTime.Now };
-          this.clipboardChanged.Publish(new ClipboardChangedData() { Data = data });
+          return;
         }
+
+        string processName = this.GetForegroundProcessName();
+        ClipData data = new ClipData() { Content = text, ProcessName = processName, Datum = DateTime.Now };
+        this.clipboardChanged.Publish(new ClipboardChangedData() { Data = data });
+        lastText = text;
       }
     }
 
     private string GetForegroundProcessName()
     {
-      var activeWindowId = NativeMethods.GetForegroundWindow();
+      IntPtr activeWindowId = NativeMethods.GetForegroundWindow();
       if (activeWindowId.Equals(0))
       {
         return string.Empty;
       }
 
-      int processId;
-      NativeMethods.GetWindowThreadProcessId(activeWindowId, out processId);
+      NativeMethods.GetWindowThreadProcessId(activeWindowId, out int processId);
       if (processId == 0)
       {
         return string.Empty;
       }
 
-      var process = Process.GetProcessById(processId);
+      Process process = Process.GetProcessById(processId);
       return process.ProcessName;
+    }
+
+    internal void PutOntoClipboard(ClipData clipData)
+    {
+      Clipboard.SetText(clipData.Content);
     }
   }
 }
