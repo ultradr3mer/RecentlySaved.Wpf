@@ -6,15 +6,16 @@ using RecentlySaved.Wpf.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media;
 
 namespace RecentlySaved.Wpf.ViewModels.Controls
 {
-  public class ClipCardViewModelBase : BaseViewModel<ClipData>
+  public class ClipCardOnlineViewModelBase : BaseViewModel<ClipboardGetData>
   {
+    public LaneGetData Lane { get; set; }
     public string StringPreview { get; set; }
     public string Content { get; set; }
-    public string MetaString { get; set; }
-    public bool IsPinned { get; set; }
+    public SolidColorBrush LaneColorBrush { get; set; }
 
     protected string GeneratePreview(string content)
     {
@@ -24,18 +25,14 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
 
       return string.Join(Environment.NewLine, lines);
     }
-
-
   }
 
-  public class ClipCardViewModel : ClipCardViewModelBase
+  public class ClipCardOnlineViewModel : ClipCardOnlineViewModelBase
   {
-    private ClipboardPinnedChangedEvent pinnedEvent;
 
-    public ClipCardViewModel(IEventAggregator eventAggregator)
+    public ClipCardOnlineViewModel()
     {
       this.PropertyChanged += this.ClipCardViewModel_PropertyChanged;
-      pinnedEvent = eventAggregator.GetEvent<ClipboardPinnedChangedEvent>();
     }
 
     private void ClipCardViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -44,16 +41,16 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
       {
         this.StringPreview = this.GeneratePreview(this.Content);
       }
-      if (e.PropertyName == nameof(IsPinned) && !IsReadingDataModel)
+      if(e.PropertyName == nameof(Lane))
       {
-        pinnedEvent.Publish(new ClipboardPinnedChangedData() { Data = this.WriteToDataModel() });
+        var laneColor = (Color)ColorConverter.ConvertFromString(this.Lane.Color);
+        this.LaneColorBrush = new SolidColorBrush(laneColor);
       }
     }
 
-    protected override void OnReadingDataModel(ClipData data)
+    protected override void OnReadingDataModel(ClipboardGetData data)
     {
-      this.StringPreview = this.GeneratePreview(data.Content);
-      this.MetaString = data.Datum.ToString("d") + " " + data.ProcessName;
+      this.StringPreview = this.GeneratePreview(data.TextContent);
     }
   }
 }

@@ -155,6 +155,8 @@
     <Compile Include="Services\CredentialsService.cs" />
     <Compile Include="Services\FileWatcher.cs" />
     <Compile Include="Services\HotKeySerivice.cs" />
+    <Compile Include="ViewModels\Controls\ClipCardOnlineViewModel.cs" />
+    <Compile Include="ViewModels\Controls\DesignTime\ClipCardOnlineViewModelDesignTime.cs" />
     <Compile Include="ViewModels\Fragments\ClipboardOnlineFragmentViewModel.cs" />
     <Compile Include="ViewModels\Fragments\ClipboardPinnedFragmentViewModel.cs" />
     <Compile Include="ViewModels\Fragments\ClipPreviewFragmentViewModel.cs" />
@@ -164,6 +166,7 @@
     <Compile Include="ViewModels\Controls\FileCardViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\MainWindowViewModelDesignTime.cs" />
     <Compile Include="ViewModels\EntryItemViewModel.cs" />
+    <Compile Include="ViewModels\Fragments\DesignTime\ClipboardOnlineFragmentViewModelDesingTime.cs" />
     <Compile Include="ViewModels\Fragments\DesignTime\ClipHistFragmentViewModelDesignTime.cs" />
     <Compile Include="ViewModels\Fragments\DesignTime\FilePreviewFragmentViewModelBaseDesignTime.cs" />
     <Compile Include="ViewModels\Fragments\DesignTime\RecentFilesFragmentViewModelDesignTime.cs" />
@@ -171,6 +174,9 @@
     <Compile Include="ViewModels\Fragments\FilePreviewFragmentViewModel.cs" />
     <Compile Include="ViewModels\Fragments\RecentFilesFragmentViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Views\Controls\ClipCardOnline.xaml.cs">
+      <DependentUpon>ClipCardOnline.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\ClipCard.xaml.cs">
       <DependentUpon>ClipCard.xaml</DependentUpon>
     </Compile>
@@ -237,6 +243,10 @@
     <Page Include="Dictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\ClipCardOnline.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Controls\ClipCard.xaml">
       <Generator>MSBuild:Compile</Generator>

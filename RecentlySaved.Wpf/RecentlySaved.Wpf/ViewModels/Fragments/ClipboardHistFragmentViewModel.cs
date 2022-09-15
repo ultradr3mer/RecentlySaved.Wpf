@@ -19,8 +19,6 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
     public ClipCardViewModelBase SelectedItem { get; set; }
   }
 
-
-
   public class ClipboardHistFragmentViewModel : ClipboardHistFragmentViewModelBase
   {
     private readonly IUnityContainer container;

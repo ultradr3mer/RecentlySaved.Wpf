@@ -3,12 +3,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:controls="clr-namespace:RecentlySaved.Wpf.Views.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              xmlns:designTime="clr-namespace:RecentlySaved.Wpf.ViewModels.Fragments.DesignTime"
-             xmlns:prism="http://prismlibrary.com/"
+             xmlns:prism="http://prismlibrary.com/" xmlns:controls="clr-namespace:RecentlySaved.Wpf.Views.Controls"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             d:DataContext ="{d:DesignInstance {x:Type designTime:ClipHistFragmentViewModelDesignTime}, IsDesignTimeCreatable=True}" >
-  <controls:ClipCardList ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}"/>
+             d:DataContext ="{d:DesignInstance {x:Type designTime:ClipboardOnlineFragmentViewModelDesingTime}, IsDesignTimeCreatable=True}" >
+  <ListView ItemsSource="{Binding Items}" 
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            HorizontalContentAlignment="Stretch" 
+            SelectedItem="{Binding SelectedItem}">
+    <ListView.ItemsPanel >
+      <ItemsPanelTemplate>
+        <WrapPanel />
+      </ItemsPanelTemplate>
+    </ListView.ItemsPanel>
+    <ListView.ItemContainerStyle>
+      <Style TargetType="ListViewItem">
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Margin" Value="1"/>
+        <Setter Property="Padding" Value="0"/>
+      </Style>
+    </ListView.ItemContainerStyle>
+    <ListView.ItemTemplate>
+      <DataTemplate>
+        <controls:ClipCardOnline/>
+      </DataTemplate>
+    </ListView.ItemTemplate>
+  </ListView>
 </UserControl>

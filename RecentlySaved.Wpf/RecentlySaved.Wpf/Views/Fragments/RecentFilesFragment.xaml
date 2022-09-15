@@ -7,11 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              xmlns:designTime="clr-namespace:RecentlySaved.Wpf.ViewModels.Fragments.DesignTime"
-              xmlns:prism="http://prismlibrary.com/" xmlns:Controls="clr-namespace:RecentlySaved.Wpf.Views.Controls"
+             xmlns:prism="http://prismlibrary.com/" 
+             xmlns:Controls="clr-namespace:RecentlySaved.Wpf.Views.Controls"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext ="{d:DesignInstance {x:Type designTime:RecentFilesFragmentViewModelDesignTime}, IsDesignTimeCreatable=True}">
   <ListView ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}"
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{x:Null}">
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{x:Null}">
     <ListView.ItemsPanel >
       <ItemsPanelTemplate>
         <WrapPanel />

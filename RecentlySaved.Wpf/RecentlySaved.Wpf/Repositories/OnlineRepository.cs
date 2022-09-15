@@ -13,16 +13,14 @@ namespace RecentlySaved.Wpf.Repositories
 {
   public class OnlineRepository
   {
-    private readonly IUnityContainer container;
     private readonly CredentialsService credentialsService;
     private ClipboardOnlineItemsRetrivedEvent itemsRetrivedEvent;
     private Client client;
     private HttpClientHandler handler;
     private HttpClient httpClient;
 
-    public OnlineRepository(IUnityContainer container, IEventAggregator eventAggregator, CredentialsService credentialsService)
+    public OnlineRepository(IEventAggregator eventAggregator, CredentialsService credentialsService)
     {
-      this.container = container;
       this.credentialsService = credentialsService;
       this.itemsRetrivedEvent = eventAggregator.GetEvent<ClipboardOnlineItemsRetrivedEvent>();
     }

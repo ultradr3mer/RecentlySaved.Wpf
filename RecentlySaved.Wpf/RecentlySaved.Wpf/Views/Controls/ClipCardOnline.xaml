@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="RecentlySaved.Wpf.Views.Controls.ClipCardOnline"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:designTime="clr-namespace:RecentlySaved.Wpf.ViewModels.Controls.DesignTime"
+             mc:Ignorable="d" 
+             Height="48" Width="164"
+             d:DataContext ="{d:DesignInstance {x:Type designTime:ClipCardOnlineViewModelDesignTime}, IsDesignTimeCreatable=True}"
+             UseLayoutRounding="True">
+  <Grid x:Name="MainGrid" Background="{DynamicResource MahApps.Brushes.Button.Square.Background.MouseOver}"  >
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="3" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+    <Rectangle Fill="{Binding LaneColorBrush}" UseLayoutRounding="True" />
+    <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" 
+               Text="{Binding StringPreview}" 
+               Grid.Column="2" 
+               TextWrapping="Wrap" 
+               FontSize="11" 
+               LineHeight="13" 
+               LineStackingStrategy="BlockLineHeight" 
+               Padding="4,2,4,2" />
+  </Grid>
+</UserControl>
