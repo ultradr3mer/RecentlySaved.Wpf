@@ -82,7 +82,7 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
     {
       if (e.PropertyName == nameof(this.SelectedItem))
       {
-        if(SelectedItem == null)
+        if (SelectedItem == null)
         {
           return;
         }
@@ -98,6 +98,12 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
       if (ClipboardHistFragmentViewModel.IsALteringClipboard)
       {
         return;
+      }
+
+      var existing = this.Items.FirstOrDefault(c => c.Content == data.Data.Content);
+      if (existing != null)
+      {
+        this.Items.Remove(existing);
       }
 
       ClipCardViewModel vm = this.container.Resolve<ClipCardViewModel>().GetWithDataModel(data.Data);

@@ -55,7 +55,7 @@ namespace RecentlySaved.Wpf.Repositories
       lock (lockObj)
       {
         var existing = clipboardData.FirstOrDefault(c => c.Content == data.Data.Content);
-        if(existing != null)
+        if (existing != null)
         {
           existing.Datum = DateTime.Now;
           if(data.Data.ProcessName != this.processName)

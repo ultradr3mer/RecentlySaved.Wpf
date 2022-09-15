@@ -13,7 +13,7 @@
       <ColumnDefinition Width="3" />
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
-    <Rectangle Fill="{Binding LaneColorBrush}" UseLayoutRounding="True" />
+    <Rectangle Fill="{Binding LaneBackgroundBrush}" UseLayoutRounding="True" />
     <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" 
                Text="{Binding StringPreview}" 
                Grid.Column="2" 

@@ -146,6 +146,7 @@
     <Compile Include="Events\FileDeletedEvent.cs" />
     <Compile Include="Events\FileRenamedEvent.cs" />
     <Compile Include="Extensions\BaseViewModelExtensions.cs" />
+    <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Interop\WindowBlur.cs" />
     <Compile Include="Repositories\OnlineRepository.cs" />
     <Compile Include="Repositories\PersistantRepository.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="ViewModels\Controls\DesignTime\ClipCardOnlineViewModelDesignTime.cs" />
     <Compile Include="ViewModels\Fragments\ClipboardOnlineFragmentViewModel.cs" />
     <Compile Include="ViewModels\Fragments\ClipboardPinnedFragmentViewModel.cs" />
+    <Compile Include="ViewModels\Fragments\ClipPreviewOnlineFragmentViewModel.cs" />
     <Compile Include="ViewModels\Fragments\ClipPreviewFragmentViewModel.cs" />
     <Compile Include="ViewModels\Controls\DesignTime\ClipCardViewModelDesignTime.cs" />
     <Compile Include="ViewModels\Controls\DesignTime\FileCardViewModelDesignTime.cs" />
@@ -166,7 +168,7 @@
     <Compile Include="ViewModels\Controls\FileCardViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\MainWindowViewModelDesignTime.cs" />
     <Compile Include="ViewModels\EntryItemViewModel.cs" />
-    <Compile Include="ViewModels\Fragments\DesignTime\ClipboardOnlineFragmentViewModelDesingTime.cs" />
+    <Compile Include="ViewModels\Fragments\DesignTime\ClipboardOnlineFragmentViewModelDesignTime.cs" />
     <Compile Include="ViewModels\Fragments\DesignTime\ClipHistFragmentViewModelDesignTime.cs" />
     <Compile Include="ViewModels\Fragments\DesignTime\FilePreviewFragmentViewModelBaseDesignTime.cs" />
     <Compile Include="ViewModels\Fragments\DesignTime\RecentFilesFragmentViewModelDesignTime.cs" />
@@ -188,6 +190,9 @@
     </Compile>
     <Compile Include="Views\Fragments\ClipboardPinnedFragment.xaml.cs">
       <DependentUpon>ClipboardPinnedFragment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Fragments\ClipPreviewOnlineFragment.xaml.cs">
+      <DependentUpon>ClipPreviewOnlineFragment.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Fragments\ClipPreviewFragment.xaml.cs">
       <DependentUpon>ClipPreviewFragment.xaml</DependentUpon>
@@ -261,6 +266,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Fragments\ClipboardPinnedFragment.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Fragments\ClipPreviewOnlineFragment.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

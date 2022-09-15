@@ -70,7 +70,7 @@ namespace RecentlySaved.Wpf.Views
       regionManager.RegisterViewWithRegion(MainWindow.Preview, () => container.Resolve<UserControl>());
       regionManager.RegisterViewWithRegion(MainWindow.Preview, () => container.Resolve<ClipPreviewFragment>());
       regionManager.RegisterViewWithRegion(MainWindow.Preview, () => container.Resolve<FilePreviewFragment>());
-      regionManager.RegisterViewWithRegion(MainWindow.Preview, () => container.Resolve<FilePreviewFragment>());
+      regionManager.RegisterViewWithRegion(MainWindow.Preview, () => container.Resolve<ClipPreviewOnlineFragment>());
       regionManager.RegisterViewWithRegion(MainWindow.ClipboardPinnedRegion, () => container.Resolve<ClipboardPinnedFragment>());
       regionManager.RegisterViewWithRegion(MainWindow.ClipbboardOnlineRegion, () => container.Resolve<LoginFragment>());
       regionManager.RegisterViewWithRegion(MainWindow.ClipbboardOnlineRegion, () => container.Resolve<ClipboardOnlineFragment>());
@@ -138,13 +138,17 @@ namespace RecentlySaved.Wpf.Views
 
     private void OnSelectedionChanged(SelectionChangedData data)
     {
-      if(data.Item.GetType() == typeof(ClipCardViewModel))
+      if (data.Item.GetType() == typeof(ClipCardViewModel))
       {
         regionManager.RequestNavigate(MainWindow.Preview, new Uri(nameof(ClipPreviewFragment), UriKind.Relative));
       }
-      else
+      else if (data.Item.GetType() == typeof(FileCardViewModel))
       {
         regionManager.RequestNavigate(MainWindow.Preview, new Uri(nameof(FilePreviewFragment), UriKind.Relative));
+      }
+      else if (data.Item.GetType() == typeof(ClipCardOnlineViewModel))
+      {
+        regionManager.RequestNavigate(MainWindow.Preview, new Uri(nameof(ClipPreviewOnlineFragment), UriKind.Relative));
       }
     }
 

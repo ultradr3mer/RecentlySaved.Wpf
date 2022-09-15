@@ -12,7 +12,7 @@ namespace RecentlySaved.Wpf.ViewModels.Controls.DesignTime
 >  msgBox.setStandardButtons(QMessageBox::Ok);
 >  msgBox.setDefaultButton(QMessageBox::Ok);
 >  msgBox.exec();";
-      this.LaneColorBrush = new System.Windows.Media.SolidColorBrush(Colors.Yellow);
+      this.LaneBackgroundBrush = new System.Windows.Media.SolidColorBrush(Colors.Yellow);
     }
   }
 }
