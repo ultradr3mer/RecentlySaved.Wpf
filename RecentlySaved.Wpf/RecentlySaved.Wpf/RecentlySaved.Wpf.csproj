@@ -126,9 +126,9 @@
     <Compile Include="Data\FileData.cs" />
     <Compile Include="Data\FileRepoData.cs" />
     <Compile Include="Data\SettingsData.cs" />
-    <Compile Include="Events\FileSelectionChangedEvent.cs" />
+    <Compile Include="Events\ClipboardPinnedChangedEvent.cs" />
     <Compile Include="Events\MainWindowDeactivatedEvent.cs" />
-    <Compile Include="Events\ClipboardSelectionChangedEvent.cs" />
+    <Compile Include="Events\SelectionChangedEvent.cs" />
     <Compile Include="Events\ClipboardChangedEvent.cs" />
     <Compile Include="Events\FileCreatedChangedEvent.cs" />
     <Compile Include="Events\FileDeletedEvent.cs" />
@@ -140,6 +140,7 @@
     <Compile Include="Services\ClipboardWatcher.cs" />
     <Compile Include="Services\FileWatcher.cs" />
     <Compile Include="Services\HotKeySerivice.cs" />
+    <Compile Include="ViewModels\Fragments\ClipboardPinnedFragmentViewModel.cs" />
     <Compile Include="ViewModels\Fragments\ClipPreviewFragmentViewModel.cs" />
     <Compile Include="ViewModels\Controls\DesignTime\ClipCardViewModelDesignTime.cs" />
     <Compile Include="ViewModels\Controls\DesignTime\FileCardViewModelDesignTime.cs" />
@@ -159,6 +160,9 @@
     </Compile>
     <Compile Include="Views\Controls\ClipCardList.xaml.cs">
       <DependentUpon>ClipCardList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Fragments\ClipboardPinnedFragment.xaml.cs">
+      <DependentUpon>ClipboardPinnedFragment.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Fragments\ClipPreviewFragment.xaml.cs">
       <DependentUpon>ClipPreviewFragment.xaml</DependentUpon>
@@ -219,6 +223,10 @@
     <Page Include="Views\Controls\ClipCardList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Fragments\ClipboardPinnedFragment.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Fragments\ClipPreviewFragment.xaml">
       <SubType>Designer</SubType>

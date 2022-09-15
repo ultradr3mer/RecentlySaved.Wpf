@@ -13,7 +13,7 @@ using Unity;
 
 namespace RecentlySaved.Wpf.ViewModels.Fragments
 {
-  public class ClipboardHistFragmentViewModelBase : BaseViewModel
+  public class ClipboardPinnedFragmentViewModelBase : BaseViewModel
   {
     public BindingList<ClipCardViewModelBase> Items { get; set; } = new BindingList<ClipCardViewModelBase>();
     public ClipCardViewModelBase SelectedItem { get; set; }
@@ -21,39 +21,26 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
 
 
-  public class ClipboardHistFragmentViewModel : ClipboardHistFragmentViewModelBase
+  public class ClipboardPinnedFragmentViewModel : ClipboardPinnedFragmentViewModelBase
   {
     private readonly IUnityContainer container;
     private readonly PersistantRepository persistantRepository;
     private readonly ClipboardWatcher watcher;
     private readonly SelectionChangedEvent selectionChangedEvent;
-    public static bool IsALteringClipboard;
 
-    public ClipboardHistFragmentViewModel(IEventAggregator eventAggregator, IUnityContainer container, PersistantRepository persistantRepository, ClipboardWatcher watcher)
+    public ClipboardPinnedFragmentViewModel(IEventAggregator eventAggregator, IUnityContainer container, PersistantRepository persistantRepository, ClipboardWatcher watcher)
     {
       this.container = container;
       this.persistantRepository = persistantRepository;
       this.watcher = watcher;
       this.ReadItems();
 
-      eventAggregator.GetEvent<ClipboardChangedEvent>().Subscribe(this.OnClipCreatedChanged, ThreadOption.UIThread);
       eventAggregator.GetEvent<MainWindowDeactivatedEvent>().Subscribe(this.OnDeactivated);
+      eventAggregator.GetEvent<ClipboardPinnedChangedEvent>().Subscribe(this.OnClipPinned);
       eventAggregator.GetEvent<SelectionChangedEvent>().Subscribe(this.OnSelectionChanged);
-      eventAggregator.GetEvent<ClipboardPinnedChangedEvent>().Subscribe(this.OnPinnedChanged);
       this.selectionChangedEvent = eventAggregator.GetEvent<SelectionChangedEvent>();
 
       this.PropertyChanged += this.ClipboardHistFragmentViewModel_PropertyChanged;
-    }
-
-    private void OnPinnedChanged(ClipboardPinnedChangedData data)
-    {
-      foreach (var singleItem in this.Items.ToList())
-      {
-        if (singleItem.DatamodelEquals(data.Data))
-        {
-          singleItem.SetDataModel(data.Data);
-        }
-      }
     }
 
     private void OnSelectionChanged(SelectionChangedData data)
@@ -64,10 +51,27 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
       }
     }
 
+    private void OnClipPinned(ClipboardPinnedChangedData data)
+    {
+      foreach (var singleItem in this.Items.ToList())
+      {
+        if (singleItem.DatamodelEquals(data.Data))
+        {
+          this.Items.Remove(singleItem);
+        }
+      }
+
+      if (data.Data.IsPinned)
+      {
+        ClipCardViewModel vm = this.container.Resolve<ClipCardViewModel>().GetWithDataModel(data.Data);
+        this.Items.Insert(0, vm);
+      }
+    }
+
     private void ReadItems()
     {
       this.Items.Clear();
-      foreach (ClipData item in persistantRepository.GetRecentClipboardData())
+      foreach (ClipData item in persistantRepository.GetPinnedClipboardData())
       {
         ClipCardViewModel vm = this.container.Resolve<ClipCardViewModel>().GetWithDataModel(item);
         this.Items.Add(vm);
@@ -76,7 +80,6 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
     private void OnDeactivated(MainWindowDeactivatedData obj)
     {
-      ClipboardHistFragmentViewModel.IsALteringClipboard = false;
       ReadItems();
     }
 
@@ -84,7 +87,7 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
     {
       if (e.PropertyName == nameof(this.SelectedItem))
       {
-        if(SelectedItem == null)
+        if (SelectedItem == null)
         {
           return;
         }
@@ -93,18 +96,6 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
         ClipboardHistFragmentViewModel.IsALteringClipboard = true;
         this.watcher.PutOntoClipboard(this.SelectedItem.WriteToDataModel());
       }
-    }
-
-    private void OnClipCreatedChanged(ClipboardChangedData data)
-    {
-      if (ClipboardHistFragmentViewModel.IsALteringClipboard)
-      {
-        return;
-      }
-
-      ClipCardViewModel vm = this.container.Resolve<ClipCardViewModel>().GetWithDataModel(data.Data);
-      this.Items.Insert(0, vm);
-      this.SelectedItem = vm;
     }
   }
 }

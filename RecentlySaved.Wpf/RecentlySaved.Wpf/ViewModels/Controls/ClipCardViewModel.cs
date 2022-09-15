@@ -1,5 +1,7 @@
-﻿using RecentlySaved.Wpf.Composite;
+﻿using Prism.Events;
+using RecentlySaved.Wpf.Composite;
 using RecentlySaved.Wpf.Data;
+using RecentlySaved.Wpf.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,7 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
     public string StringPreview { get; set; }
     public string Content { get; set; }
     public string MetaString { get; set; }
+    public bool IsPinned { get; set; }
 
     protected string GeneratePreview(string content)
     {
@@ -20,14 +23,18 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
 
       return string.Join(Environment.NewLine, lines);
     }
-  }
 
+
+  }
 
   public class ClipCardViewModel : ClipCardViewModelBase
   {
-    public ClipCardViewModel()
+    private ClipboardPinnedChangedEvent pinnedEvent;
+
+    public ClipCardViewModel(IEventAggregator eventAggregator)
     {
       this.PropertyChanged += this.ClipCardViewModel_PropertyChanged;
+      pinnedEvent = eventAggregator.GetEvent<ClipboardPinnedChangedEvent>();
     }
 
     private void ClipCardViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -35,6 +42,10 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
       if (e.PropertyName == nameof(Content))
       {
         this.StringPreview = this.GeneratePreview(this.Content);
+      }
+      if (e.PropertyName == nameof(IsPinned) && !IsReadingDataModel)
+      {
+        pinnedEvent.Publish(new ClipboardPinnedChangedData() { Data = this.WriteToDataModel() });
       }
     }
 

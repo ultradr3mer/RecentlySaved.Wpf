@@ -11,12 +11,14 @@
     <Grid DataContext="{Binding Item}">
     <Grid.RowDefinitions>
       <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="20"/>
     </Grid.RowDefinitions>
     <TextBox HorizontalAlignment="Stretch" Margin="5" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Path=Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" />
+    <CheckBox Grid.Row="1" Content="Pinned" IsChecked="{Binding Path=IsPinned, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
     <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" 
                  TextWrapping="NoWrap" 
-                 Grid.Row="1" 
+                 Grid.Row="2" 
                  FontSize="14" Name="Path" Text="{Binding MetaString}" HorizontalAlignment="Stretch" Background="{StaticResource MahApps.Brushes.Accent}" Padding="4,0,4,2" />
   </Grid>
 </UserControl>

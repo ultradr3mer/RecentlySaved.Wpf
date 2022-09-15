@@ -2,6 +2,7 @@
 using Prism.Ioc;
 using Prism.Mvvm;
 using RecentlySaved.Wpf.Repositories;
+using RecentlySaved.Wpf.ViewModels.Fragments;
 using RecentlySaved.Wpf.Views;
 using System.Windows;
 

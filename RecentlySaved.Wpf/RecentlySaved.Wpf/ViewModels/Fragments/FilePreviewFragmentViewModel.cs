@@ -19,12 +19,15 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
   {
     public FilePreviewFragmentViewModel(IEventAggregator eventAggregator)
     {
-      eventAggregator.GetEvent<FileSelectionChangedEvent>().Subscribe(this.OnSelectionChanged);
+      eventAggregator.GetEvent<SelectionChangedEvent>().Subscribe(this.OnSelectionChanged);
     }
 
-    private void OnSelectionChanged(FileSelectionChangedData data)
+    private void OnSelectionChanged(SelectionChangedData data)
     {
-      this.Item = data.Item;
+      if (data.Item is FileCardViewModel newItem)
+      {
+        this.Item = newItem;
+      }
     }
   }
 }

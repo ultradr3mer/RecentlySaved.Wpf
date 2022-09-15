@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace RecentlySaved.Wpf.Events
 {
-  public class ClipboardSelectionChangedData
+  public class SelectionChangedData
   {
-    public ClipCardViewModelBase Item { get; set; }
+    public object Item { get; set; }
   }
 
-  public class ClipboardSelectionChangedEvent : PubSubEvent<ClipboardSelectionChangedData>
+  public class SelectionChangedEvent : PubSubEvent<SelectionChangedData>
   {
 
   }

@@ -11,5 +11,6 @@ namespace RecentlySaved.Wpf.Data
     public string Content { get; set; }
     public string ProcessName { get; set; }
     public DateTime Datum { get; set; }
+    public bool IsPinned { get; set; }
   }
 }

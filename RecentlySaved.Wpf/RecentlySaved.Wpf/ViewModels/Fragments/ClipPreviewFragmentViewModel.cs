@@ -16,12 +16,15 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
     public ClipPreviewFragmentViewModel(IEventAggregator eventAggregator)
     {
-      eventAggregator.GetEvent<ClipboardSelectionChangedEvent>().Subscribe(this.OnSelectionChanged);
+      eventAggregator.GetEvent<SelectionChangedEvent>().Subscribe(this.OnSelectionChanged);
     }
 
-    private void OnSelectionChanged(ClipboardSelectionChangedData data)
+    private void OnSelectionChanged(SelectionChangedData data)
     {
-      this.Item = data.Item;
+      if(data.Item is ClipCardViewModel newItem)
+      {
+        this.Item = newItem;
+      }
     }
   }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
+using RecentlySaved.Wpf.Extensions;
 
 namespace RecentlySaved.Wpf.Repositories
 {
@@ -36,8 +37,17 @@ namespace RecentlySaved.Wpf.Repositories
       eventAggregator.GetEvent<FileDeletedEvent>().Subscribe(this.OnFileDeleted);
       eventAggregator.GetEvent<FileRenamedEvent>().Subscribe(this.OnFileRenamed);
       eventAggregator.GetEvent<ClipboardChangedEvent>().Subscribe(this.OnClipboardChanged);
+      eventAggregator.GetEvent<ClipboardPinnedChangedEvent>().Subscribe(this.OnClipboardPinnedChanged);
 
       nextSaveInterval = DateTime.Now.AddMinutes(30);
+    }
+
+    private void OnClipboardPinnedChanged(ClipboardPinnedChangedData data)
+    {
+      lock (lockObj)
+      {
+        this.OnFilesChanged();
+      }
     }
 
     private void OnClipboardChanged(ClipboardChangedData data)
@@ -114,6 +124,14 @@ namespace RecentlySaved.Wpf.Repositories
       lock (lockObj)
       {
         return this.clipboardData.OrderByDescending(o => o.Datum).ToList();
+      }
+    }
+
+    internal List<ClipData> GetPinnedClipboardData()
+    {
+      lock (lockObj)
+      {
+        return this.clipboardData.Where(c => c.IsPinned).OrderByDescending(o => o.Datum).ToList();
       }
     }
 

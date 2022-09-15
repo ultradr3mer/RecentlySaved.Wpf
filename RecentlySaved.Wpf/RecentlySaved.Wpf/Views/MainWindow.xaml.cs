@@ -7,6 +7,7 @@ using RecentlySaved.Wpf.Events;
 using RecentlySaved.Wpf.Interop;
 using RecentlySaved.Wpf.Repositories;
 using RecentlySaved.Wpf.Services;
+using RecentlySaved.Wpf.ViewModels.Controls;
 using RecentlySaved.Wpf.Views.Controls;
 using RecentlySaved.Wpf.Views.Fragments;
 using System;
@@ -31,6 +32,7 @@ namespace RecentlySaved.Wpf.Views
     public const string RecentFilesRegion = "RecentFilesRegion";
     public const string ClipboardHistRegion = "ClipboardHistRegion";
     public const string Preview = "Preview";
+    public const string ClipboardPinnedRegion = "ClipboardPinnedRegion";
 
     private readonly IEventAggregator eventAggregator;
     private readonly ClipboardWatcher clipboardWatcher;
@@ -67,13 +69,13 @@ namespace RecentlySaved.Wpf.Views
       regionManager.RegisterViewWithRegion(MainWindow.Preview, () => container.Resolve<UserControl>());
       regionManager.RegisterViewWithRegion(MainWindow.Preview, () => container.Resolve<ClipPreviewFragment>());
       regionManager.RegisterViewWithRegion(MainWindow.Preview, () => container.Resolve<FilePreviewFragment>());
+      regionManager.RegisterViewWithRegion(MainWindow.ClipboardPinnedRegion, () => container.Resolve<ClipboardPinnedFragment>());
 
       WpfClipboardMonitor.ClipboardMonitor clip = new WpfClipboardMonitor.ClipboardMonitor(this, true);
       clip.ClipboardUpdate += this.Clip_ClipboardUpdate;
       this.eventAggregator = eventAggregator;
       this.clipboardWatcher = clipboardWatcher;
-      eventAggregator.GetEvent<ClipboardSelectionChangedEvent>().Subscribe(this.OnSelectedClipboardItemChanged);
-      eventAggregator.GetEvent<FileSelectionChangedEvent>().Subscribe(this.OnSelectedFileChanged);
+      eventAggregator.GetEvent<SelectionChangedEvent>().Subscribe(this.OnSelectedionChanged);
       this.deactivatedEvent = eventAggregator.GetEvent<MainWindowDeactivatedEvent>();
 
       this.MoveToBottomPosition();
@@ -86,11 +88,6 @@ namespace RecentlySaved.Wpf.Views
 
       this.Left = (SystemParameters.WorkArea.Width - this.Width) / 2;
       this.Top = (SystemParameters.WorkArea.Height - this.Height);
-    }
-
-    private void OnSelectedFileChanged(FileSelectionChangedData obj)
-    {
-      regionManager.RequestNavigate(MainWindow.Preview, new Uri(nameof(FilePreviewFragment), UriKind.Relative));
     }
 
     protected override void OnSourceInitialized(EventArgs e)
@@ -135,9 +132,16 @@ namespace RecentlySaved.Wpf.Views
       this.WindowState = WindowState.Minimized;
     }
 
-    private void OnSelectedClipboardItemChanged(ClipboardSelectionChangedData data)
+    private void OnSelectedionChanged(SelectionChangedData data)
     {
-      regionManager.RequestNavigate(MainWindow.Preview, new Uri(nameof(ClipPreviewFragment), UriKind.Relative));
+      if(data.Item.GetType() == typeof(ClipCardViewModel))
+      {
+        regionManager.RequestNavigate(MainWindow.Preview, new Uri(nameof(ClipPreviewFragment), UriKind.Relative));
+      }
+      else
+      {
+        regionManager.RequestNavigate(MainWindow.Preview, new Uri(nameof(FilePreviewFragment), UriKind.Relative));
+      }
     }
 
     private void Clip_ClipboardUpdate(object sender, EventArgs e)

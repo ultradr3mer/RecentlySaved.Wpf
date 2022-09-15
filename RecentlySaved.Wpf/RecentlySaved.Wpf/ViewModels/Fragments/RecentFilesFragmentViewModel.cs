@@ -23,7 +23,7 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
 #pragma warning disable IDE0044 // Add readonly modifier
     private FileWatcher watcher;
-    private FileSelectionChangedEvent selectionChangedEvent;
+    private SelectionChangedEvent selectionChangedEvent;
     private readonly IUnityContainer container;
 #pragma warning restore IDE0044 // Add readonly modifier
 
@@ -35,9 +35,9 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
       eventAggregator.GetEvent<FileCreatedChangedEvent>().Subscribe(this.OnFileCreatedChanged, ThreadOption.UIThread);
       eventAggregator.GetEvent<FileDeletedEvent>().Subscribe(this.OnFileDeleted, ThreadOption.UIThread);
       eventAggregator.GetEvent<FileRenamedEvent>().Subscribe(this.OnFileRenamed, ThreadOption.UIThread);
-      eventAggregator.GetEvent<ClipboardSelectionChangedEvent>().Subscribe(this.OnClipboardSelectionChanged, ThreadOption.UIThread);
+      eventAggregator.GetEvent<SelectionChangedEvent>().Subscribe(this.OnSelectionChanged, ThreadOption.UIThread);
 
-      this.selectionChangedEvent = eventAggregator.GetEvent<FileSelectionChangedEvent>();
+      this.selectionChangedEvent = eventAggregator.GetEvent<SelectionChangedEvent>();
 
       foreach (FileData singleFile in fileRepository.GetRecentFiles())
       {
@@ -47,9 +47,12 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
       this.PropertyChanged += this.RecentFilesFragmentViewModel_PropertyChanged;
     }
 
-    private void OnClipboardSelectionChanged(ClipboardSelectionChangedData obj)
+    private void OnSelectionChanged(SelectionChangedData data)
     {
-      this.SelectedItem = null;
+      if (this.SelectedItem != data.Item)
+      {
+        this.SelectedItem = null;
+      }
     }
 
     private void RecentFilesFragmentViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -61,7 +64,7 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
           return;
         }
 
-        selectionChangedEvent.Publish(new FileSelectionChangedData() { Item = this.SelectedItem });
+        selectionChangedEvent.Publish(new SelectionChangedData() { Item = this.SelectedItem });
       }
     }
 
