@@ -11,7 +11,7 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext ="{d:DesignInstance {x:Type designTime:RecentFilesFragmentViewModelDesignTime}, IsDesignTimeCreatable=True}">
   <ListView ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}"
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{x:Null}">
     <ListView.ItemsPanel >
       <ItemsPanelTemplate>
         <WrapPanel />

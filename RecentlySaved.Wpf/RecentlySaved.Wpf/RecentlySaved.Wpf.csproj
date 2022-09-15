@@ -134,6 +134,7 @@
     <Compile Include="Events\FileDeletedEvent.cs" />
     <Compile Include="Events\FileRenamedEvent.cs" />
     <Compile Include="Extensions\BaseViewModelExtensions.cs" />
+    <Compile Include="Interop\WindowBlur.cs" />
     <Compile Include="Repositories\PersistantRepository.cs" />
     <Compile Include="Repositories\SettingsRepository.cs" />
     <Compile Include="Services\ClipboardWatcher.cs" />
@@ -207,6 +208,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Dictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\ClipCard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

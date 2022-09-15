@@ -16,7 +16,7 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
     {
       IEnumerable<string> lines = content.Replace(Environment.NewLine, "\n").Replace("\t", "  ").Split('\n');
       int minSpaces = lines.Min(l => l.Length - l.TrimStart().Length);
-      lines = lines.Select(l => l.Substring(minSpaces));
+      lines = lines.Select(l => ">" + l.Substring(minSpaces).TrimEnd());
 
       return string.Join(Environment.NewLine, lines);
     }

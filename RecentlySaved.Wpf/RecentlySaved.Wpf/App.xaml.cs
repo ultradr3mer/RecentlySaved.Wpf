@@ -1,16 +1,8 @@
 ﻿using AdvancedClipboard.Wpf.Services;
 using Prism.Ioc;
 using Prism.Mvvm;
-using Prism.Unity;
 using RecentlySaved.Wpf.Repositories;
 using RecentlySaved.Wpf.Views;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace RecentlySaved.Wpf
