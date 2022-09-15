@@ -82,6 +82,16 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Primitives, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.Serialization.Primitives.4.3.0\lib\net46\System.Runtime.Serialization.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.Cryptography.ProtectedData, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.ProtectedData.6.0.0\lib\net461\System.Security.Cryptography.ProtectedData.dll</HintPath>
+    </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -122,10 +132,12 @@
     </Compile>
     <Compile Include="Composite\BaseViewModel.cs" />
     <Compile Include="Composite\BaseViewModelOfT.cs" />
+    <Compile Include="Constants\ContentTypes.cs" />
     <Compile Include="Data\ClipData.cs" />
     <Compile Include="Data\FileData.cs" />
     <Compile Include="Data\FileRepoData.cs" />
     <Compile Include="Data\SettingsData.cs" />
+    <Compile Include="Events\ClipboardOnlineItemsRetrivedEvent.cs" />
     <Compile Include="Events\ClipboardPinnedChangedEvent.cs" />
     <Compile Include="Events\MainWindowDeactivatedEvent.cs" />
     <Compile Include="Events\SelectionChangedEvent.cs" />
@@ -135,11 +147,15 @@
     <Compile Include="Events\FileRenamedEvent.cs" />
     <Compile Include="Extensions\BaseViewModelExtensions.cs" />
     <Compile Include="Interop\WindowBlur.cs" />
+    <Compile Include="Repositories\OnlineRepository.cs" />
     <Compile Include="Repositories\PersistantRepository.cs" />
     <Compile Include="Repositories\SettingsRepository.cs" />
+    <Compile Include="Services\Client.Generated.cs" />
     <Compile Include="Services\ClipboardWatcher.cs" />
+    <Compile Include="Services\CredentialsService.cs" />
     <Compile Include="Services\FileWatcher.cs" />
     <Compile Include="Services\HotKeySerivice.cs" />
+    <Compile Include="ViewModels\Fragments\ClipboardOnlineFragmentViewModel.cs" />
     <Compile Include="ViewModels\Fragments\ClipboardPinnedFragmentViewModel.cs" />
     <Compile Include="ViewModels\Fragments\ClipPreviewFragmentViewModel.cs" />
     <Compile Include="ViewModels\Controls\DesignTime\ClipCardViewModelDesignTime.cs" />
@@ -161,6 +177,9 @@
     <Compile Include="Views\Controls\ClipCardList.xaml.cs">
       <DependentUpon>ClipCardList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Fragments\ClipboardOnlineFragment.xaml.cs">
+      <DependentUpon>ClipboardOnlineFragment.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Fragments\ClipboardPinnedFragment.xaml.cs">
       <DependentUpon>ClipboardPinnedFragment.xaml</DependentUpon>
     </Compile>
@@ -175,6 +194,9 @@
     </Compile>
     <Compile Include="Views\Fragments\FilePreviewFragment.xaml.cs">
       <DependentUpon>FilePreviewFragment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Fragments\LoginFragment.xaml.cs">
+      <DependentUpon>LoginFragment.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Fragments\RecentFilesFragment.xaml.cs">
       <DependentUpon>RecentFilesFragment.xaml</DependentUpon>
@@ -224,6 +246,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Fragments\ClipboardOnlineFragment.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Fragments\ClipboardPinnedFragment.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -241,6 +267,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Fragments\FilePreviewFragment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Fragments\LoginFragment.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

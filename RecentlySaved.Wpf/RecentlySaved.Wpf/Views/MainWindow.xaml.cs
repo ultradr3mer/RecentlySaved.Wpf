@@ -33,6 +33,7 @@ namespace RecentlySaved.Wpf.Views
     public const string ClipboardHistRegion = "ClipboardHistRegion";
     public const string Preview = "Preview";
     public const string ClipboardPinnedRegion = "ClipboardPinnedRegion";
+    public const string ClipbboardOnlineRegion = "ClipbboardOnlineRegion";
 
     private readonly IEventAggregator eventAggregator;
     private readonly ClipboardWatcher clipboardWatcher;
@@ -69,7 +70,10 @@ namespace RecentlySaved.Wpf.Views
       regionManager.RegisterViewWithRegion(MainWindow.Preview, () => container.Resolve<UserControl>());
       regionManager.RegisterViewWithRegion(MainWindow.Preview, () => container.Resolve<ClipPreviewFragment>());
       regionManager.RegisterViewWithRegion(MainWindow.Preview, () => container.Resolve<FilePreviewFragment>());
+      regionManager.RegisterViewWithRegion(MainWindow.Preview, () => container.Resolve<FilePreviewFragment>());
       regionManager.RegisterViewWithRegion(MainWindow.ClipboardPinnedRegion, () => container.Resolve<ClipboardPinnedFragment>());
+      regionManager.RegisterViewWithRegion(MainWindow.ClipbboardOnlineRegion, () => container.Resolve<LoginFragment>());
+      regionManager.RegisterViewWithRegion(MainWindow.ClipbboardOnlineRegion, () => container.Resolve<ClipboardOnlineFragment>());
 
       WpfClipboardMonitor.ClipboardMonitor clip = new WpfClipboardMonitor.ClipboardMonitor(this, true);
       clip.ClipboardUpdate += this.Clip_ClipboardUpdate;
