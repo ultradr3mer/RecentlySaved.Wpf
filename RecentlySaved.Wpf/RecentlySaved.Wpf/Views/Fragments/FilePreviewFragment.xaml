@@ -20,10 +20,10 @@
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" HorizontalAlignment="Stretch" Margin="5" TextWrapping="Wrap" FontSize="32" Text="{Binding FileName}" VerticalAlignment="Top" />
-        <Button Grid.Column="1" Content="Go to" Command="{Binding OpenCommand}" VerticalAlignment="Top"/>
+        <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" HorizontalAlignment="Stretch" Margin="5" TextWrapping="Wrap" FontSize="26" Text="{Binding FileName}" VerticalAlignment="Top" />
+        <Button Grid.Column="1" Content="Show in explorer" Style="{StaticResource MahApps.Styles.Button.Square}" Command="{Binding OpenCommand}" VerticalAlignment="Top"/>
       </Grid>
-      <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" HorizontalAlignment="Stretch" Margin="5" TextWrapping="Wrap" FontSize="18" Text="{Binding FilePath}" VerticalAlignment="Top" />
+      <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" HorizontalAlignment="Stretch" Margin="5" TextWrapping="Wrap" FontSize="14" Text="{Binding FilePath}" VerticalAlignment="Top" />
       <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" HorizontalAlignment="Stretch" Margin="5" TextWrapping="Wrap" FontSize="14" Text="{Binding DateString}" VerticalAlignment="Top" />
     </StackPanel>
     <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" 

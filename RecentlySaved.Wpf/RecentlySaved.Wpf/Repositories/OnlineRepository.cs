@@ -1,13 +1,10 @@
 ﻿using Prism.Events;
 using RecentlySaved.Wpf.Events;
 using RecentlySaved.Wpf.Services;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Unity;
 
 namespace RecentlySaved.Wpf.Repositories
 {
@@ -38,7 +35,17 @@ namespace RecentlySaved.Wpf.Repositories
       await Refresh();
     }
 
-    private async Task Refresh()
+    internal Task PostPlainTextAsync(ClipboardPostPlainTextData data)
+    {
+      return this.client.ApiClipboardPostplaintextAsync(data);
+    }
+
+    internal Task<LaneGetData> PostlaneAsync(LanePostData data)
+    {
+       return this.client.ApiLanePostlaneAsync(data);
+    }
+
+    public async Task Refresh()
     {
       var content = await this.client.ApiClipboardGetwithcontextAsync();
       this.itemsRetrivedEvent.Publish(new ClipboardOnlineItemsRetrivedData()

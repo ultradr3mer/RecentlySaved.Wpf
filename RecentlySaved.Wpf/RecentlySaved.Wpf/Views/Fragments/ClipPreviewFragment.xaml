@@ -3,22 +3,41 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:RecentlySaved.Wpf.Views.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True">
-    <Grid DataContext="{Binding Item}">
+  <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="20"/>
     </Grid.RowDefinitions>
-    <TextBox HorizontalAlignment="Stretch" Margin="5" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Path=Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" />
-    <CheckBox Grid.Row="1" Content="Pinned" IsChecked="{Binding Path=IsPinned, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+    <TextBox HorizontalAlignment="Stretch" Margin="5" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Path=Item.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" />
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <CheckBox Content="Pinned" IsChecked="{Binding Path=Item.IsPinned, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+      <Button Grid.Column="1" 
+              Style="{StaticResource MahApps.Styles.Button.Square}" 
+              Command="{Binding UploadCommand}" 
+              VerticalAlignment="Top" 
+              Margin="5">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <TextBlock Text="Upload" FontSize="12" />
+          <TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="14" Grid.Column="1" />
+        </Grid>
+      </Button>
+    </Grid>
     <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" 
                  TextWrapping="NoWrap" 
                  Grid.Row="2" 
-                 FontSize="14" Name="Path" Text="{Binding MetaString}" HorizontalAlignment="Stretch" Background="{StaticResource MahApps.Brushes.Accent}" Padding="4,0,4,2" />
+                 FontSize="14" Name="Path" Text="{Binding Item.MetaString}" HorizontalAlignment="Stretch" Background="{StaticResource MahApps.Brushes.Accent}" Padding="4,0,4,2" />
   </Grid>
 </UserControl>

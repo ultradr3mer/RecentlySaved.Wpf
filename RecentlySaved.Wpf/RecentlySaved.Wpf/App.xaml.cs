@@ -3,9 +3,7 @@ using Prism.Ioc;
 using Prism.Mvvm;
 using RecentlySaved.Wpf.Repositories;
 using RecentlySaved.Wpf.Services;
-using RecentlySaved.Wpf.ViewModels.Fragments;
 using RecentlySaved.Wpf.Views;
-using System.Net.Http;
 using System.Windows;
 
 namespace RecentlySaved.Wpf
@@ -35,6 +33,8 @@ namespace RecentlySaved.Wpf
       containerRegistry.RegisterManySingleton<FileWatcher>();
       containerRegistry.RegisterManySingleton<ClipboardWatcher>();
       containerRegistry.RegisterManySingleton<CredentialsService>();
+      containerRegistry.RegisterManySingleton<OnlineRepository>();
+      containerRegistry.RegisterManySingleton<UploadService>();
 
       ViewModelLocationProvider.SetDefaultViewModelFactory((type) => this.Container.Resolve(type));
     }

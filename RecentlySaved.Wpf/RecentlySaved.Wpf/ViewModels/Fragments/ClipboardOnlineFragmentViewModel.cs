@@ -63,6 +63,8 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
     private void OnItemsRetrived(ClipboardOnlineItemsRetrivedData data)
     {
+      this.Items.Clear();
+
       var laneDict = data.Lanes.ToDictionary(o => o.Id.Value);
 
       foreach (var item in data.Entries)
