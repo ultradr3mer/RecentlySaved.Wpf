@@ -29,17 +29,17 @@
       <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" HorizontalAlignment="Stretch" Margin="5" TextWrapping="Wrap" FontSize="14" Text="{Binding Path=Item.FilePath}" VerticalAlignment="Top" />
       <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" HorizontalAlignment="Stretch" Margin="5" TextWrapping="Wrap" FontSize="14" Text="{Binding Path=Item.DateString}" VerticalAlignment="Top" />
     </StackPanel>
-    <StackPanel Grid.Column="1">
+    <StackPanel Grid.Column="1" >
       <Button Grid.Column="1" 
               Content="Show in explorer" 
               Style="{StaticResource MahApps.Styles.Button.Square}" 
               Command="{Binding OpenCommand}" 
-              VerticalAlignment="Top" Margin="2" Padding="5,0,5,0" Height="27.96" />
+              VerticalAlignment="Top" Margin="2" Padding="5,0,5,0" Height="27.96"/>
       <Button Style="{StaticResource MahApps.Styles.Button.Square}" 
               Command="{Binding UploadCommand}" 
               VerticalAlignment="Top" 
               HorizontalAlignment="Stretch"
-              Margin="2">
+              Margin="2" Click="UploadClickAsync">
         <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>

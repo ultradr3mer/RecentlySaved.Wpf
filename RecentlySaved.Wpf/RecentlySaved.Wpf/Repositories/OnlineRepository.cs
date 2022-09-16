@@ -15,6 +15,7 @@ namespace RecentlySaved.Wpf.Repositories
     private readonly CredentialsService credentialsService;
     private readonly ClipboardOnlineItemsRetrivedEvent itemsRetrivedEvent;
     private Client client;
+    private CookieContainer cookieContainer;
     private HttpClientHandler handler;
     private HttpClient httpClient;
 
@@ -26,7 +27,7 @@ namespace RecentlySaved.Wpf.Repositories
 
     internal async Task Initialize()
     {
-      CookieContainer cookieContainer = new CookieContainer();
+      this.cookieContainer = new CookieContainer();
       this.handler = new HttpClientHandler() { CookieContainer = cookieContainer };
       this.httpClient = new HttpClient(this.handler);
       this.client = new Client(this.httpClient);
