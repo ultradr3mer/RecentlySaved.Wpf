@@ -1,6 +1,8 @@
 ﻿using Prism.Events;
 using RecentlySaved.Wpf.Events;
 using RecentlySaved.Wpf.Services;
+using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -11,7 +13,7 @@ namespace RecentlySaved.Wpf.Repositories
   public class OnlineRepository
   {
     private readonly CredentialsService credentialsService;
-    private ClipboardOnlineItemsRetrivedEvent itemsRetrivedEvent;
+    private readonly ClipboardOnlineItemsRetrivedEvent itemsRetrivedEvent;
     private Client client;
     private HttpClientHandler handler;
     private HttpClient httpClient;
@@ -24,30 +26,40 @@ namespace RecentlySaved.Wpf.Repositories
 
     internal async Task Initialize()
     {
-      var cookieContainer = new CookieContainer();
+      CookieContainer cookieContainer = new CookieContainer();
       this.handler = new HttpClientHandler() { CookieContainer = cookieContainer };
-      this.httpClient = new HttpClient(handler);
+      this.httpClient = new HttpClient(this.handler);
       this.client = new Client(this.httpClient);
 
-      var data = new AuthenticationPostData() { Email = this.credentialsService.UserName, Password = this.credentialsService.UserPassword };
+      AuthenticationPostData data = new AuthenticationPostData() { Email = this.credentialsService.UserName, Password = this.credentialsService.UserPassword };
       await this.client.ApiAuthenticationAsync(data);
 
-      await Refresh();
+      await this.Refresh();
     }
 
-    internal Task PostPlainTextAsync(ClipboardPostPlainTextData data)
+    internal async Task<ClipboardGetData> PostfileAsync(string fullPath, Guid? laneId)
     {
-      return this.client.ApiClipboardPostplaintextAsync(data);
+      string extension = Path.GetExtension(fullPath);
+
+      using (var stream = File.OpenRead(fullPath))
+      {
+        return await this.client.ApiClipboardPostfileAsync(extension, laneId, new FileParameter(stream));
+      }
+    }
+
+    internal Task PostPlainTextAsync(ClipboardPostPlainTextData body)
+    {
+      return this.client.ApiClipboardPostplaintextAsync(body);
     }
 
     internal Task<LaneGetData> PostlaneAsync(LanePostData data)
     {
-       return this.client.ApiLanePostlaneAsync(data);
+      return this.client.ApiLanePostlaneAsync(data);
     }
 
     public async Task Refresh()
     {
-      var content = await this.client.ApiClipboardGetwithcontextAsync();
+      ClipboardContainerGetData content = await this.client.ApiClipboardGetwithcontextAsync();
       this.itemsRetrivedEvent.Publish(new ClipboardOnlineItemsRetrivedData()
       {
         Entries = content.Entries.ToList(),
@@ -55,5 +67,6 @@ namespace RecentlySaved.Wpf.Repositories
       });
     }
   }
-
 }
+
+

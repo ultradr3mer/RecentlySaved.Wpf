@@ -1,4 +1,5 @@
 ﻿using Prism.Events;
+using RecentlySaved.Wpf.Data;
 using RecentlySaved.Wpf.Events;
 using RecentlySaved.Wpf.Repositories;
 using System;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RecentlySaved.Wpf.Services
 {
-  internal class UploadService
+  public class UploadService
   {
     private const string UploadLaneName = "QuickBoard";
     private readonly OnlineRepository onlineRepository;
@@ -18,6 +19,14 @@ namespace RecentlySaved.Wpf.Services
       eventAggregator.GetEvent<ClipboardOnlineItemsRetrivedEvent>().Subscribe(this.OnDataRetrived);
 
       this.onlineRepository = onlineRepository;
+    }
+
+    public async Task PostFile(string fullPath)
+    {
+      var laneId = this.uploadLane?.Id ?? await this.CreateUploadLane();
+
+      await onlineRepository.PostfileAsync(fullPath, laneId);
+      await onlineRepository.Refresh();
     }
 
     public async Task PostPlainTextAsync(string content)

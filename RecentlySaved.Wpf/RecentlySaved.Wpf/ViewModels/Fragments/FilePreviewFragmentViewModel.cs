@@ -1,12 +1,18 @@
-﻿using Prism.Events;
+﻿using MvvmHelpers.Commands;
+using MvvmHelpers.Interfaces;
+using Prism.Commands;
+using Prism.Events;
 using RecentlySaved.Wpf.Composite;
+using RecentlySaved.Wpf.Data;
 using RecentlySaved.Wpf.Events;
+using RecentlySaved.Wpf.Services;
 using RecentlySaved.Wpf.ViewModels.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace RecentlySaved.Wpf.ViewModels.Fragments
 {
@@ -17,9 +23,24 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
   internal class FilePreviewFragmentViewModel : FilePreviewFragmentViewModelBase
   {
-    public FilePreviewFragmentViewModel(IEventAggregator eventAggregator)
+    private readonly UploadService uploadService;
+
+    public ICommand OpenCommand { get; set; }
+    public ICommand UploadCommand { get; set; }
+
+    public FilePreviewFragmentViewModel(IEventAggregator eventAggregator, UploadService uploadService)
     {
       eventAggregator.GetEvent<SelectionChangedEvent>().Subscribe(this.OnSelectionChanged);
+      this.OpenCommand = new DelegateCommand(this.OpenCommandExecute);
+      this.UploadCommand = new AsyncCommand(this.UploadCommandExecute);
+      this.uploadService = uploadService;
+    }
+
+    private void OpenCommandExecute()
+    {
+      string argument = "/select, \"" + this.Item.FullPath + "\"";
+
+      System.Diagnostics.Process.Start("explorer.exe", argument);
     }
 
     private void OnSelectionChanged(SelectionChangedData data)
@@ -28,6 +49,11 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
       {
         this.Item = newItem;
       }
+    }
+
+    private async Task UploadCommandExecute()
+    {
+      await this.uploadService.PostFile(Item.FullPath);
     }
   }
 }
