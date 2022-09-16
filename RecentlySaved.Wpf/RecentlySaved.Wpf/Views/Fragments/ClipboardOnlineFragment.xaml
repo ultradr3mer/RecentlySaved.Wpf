@@ -8,11 +8,12 @@
              xmlns:designTime="clr-namespace:RecentlySaved.Wpf.ViewModels.Fragments.DesignTime"
              xmlns:prism="http://prismlibrary.com/" xmlns:controls="clr-namespace:RecentlySaved.Wpf.Views.Controls"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             d:DataContext ="{d:DesignInstance {x:Type designTime:ClipboardOnlineFragmentViewModelDesingTime}, IsDesignTimeCreatable=True}" >
+             d:DataContext ="{d:DesignInstance {x:Type designTime:ClipboardOnlineFragmentViewModelDesignTime}, IsDesignTimeCreatable=True} " >
   <ListView ItemsSource="{Binding Items}" 
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
             HorizontalContentAlignment="Stretch" 
-            SelectedItem="{Binding SelectedItem}">
+            SelectedItem="{Binding SelectedItem}" Background="{x:Null}"
+            x:Name="List">
     <ListView.ItemsPanel >
       <ItemsPanelTemplate>
         <WrapPanel />

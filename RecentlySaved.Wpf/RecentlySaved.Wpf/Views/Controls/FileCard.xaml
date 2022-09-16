@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:designTime="clr-namespace:RecentlySaved.Wpf.ViewModels.Controls.DesignTime"
              mc:Ignorable="d" 
-             Height="43" Width="164"
+             Height="43" Width="150"
              d:DataContext ="{d:DesignInstance {x:Type designTime:FileCardViewModelDesignTime}, IsDesignTimeCreatable=True}">
   <Grid x:Name="MainGrid" Background="{DynamicResource MahApps.Brushes.Button.Square.Background.MouseOver}">
     <Grid.RowDefinitions>

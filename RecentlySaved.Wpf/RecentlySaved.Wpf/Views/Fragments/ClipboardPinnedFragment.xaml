@@ -10,5 +10,5 @@
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext ="{d:DesignInstance {x:Type designTime:ClipHistFragmentViewModelDesignTime}, IsDesignTimeCreatable=True}" >
-  <controls:ClipCardList ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}"/>
+  <controls:ClipCardList x:Name="List" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}"/>
 </UserControl>

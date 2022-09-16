@@ -3,13 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:RecentlySaved.Wpf.Views.Controls"
              xmlns:designTime="clr-namespace:RecentlySaved.Wpf.ViewModels.Controls.DesignTime"
              mc:Ignorable="d" 
-             Height="48" Width="164"
+             Height="48" Width="150"
              d:DataContext ="{d:DesignInstance {x:Type designTime:ClipCardViewModelDesignTime}, IsDesignTimeCreatable=True}"
              UseLayoutRounding="True">
-
   <Grid x:Name="MainGrid" Background="{DynamicResource MahApps.Brushes.Button.Square.Background.MouseOver}"  >
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />

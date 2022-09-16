@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using Prism.Events;
+using RecentlySaved.Wpf.Events;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace RecentlySaved.Wpf.Views.Fragments
 {
@@ -20,9 +9,20 @@ namespace RecentlySaved.Wpf.Views.Fragments
   /// </summary>
   public partial class RecentFilesFragment : UserControl
   {
-    public RecentFilesFragment()
+    public RecentFilesFragment(IEventAggregator eventAggregator)
     {
       InitializeComponent();
+
+      eventAggregator.GetEvent<MainWindowDeactivatedEvent>().Subscribe(this.OnMainDeactivated, ThreadOption.UIThread);
+    }
+
+    private void OnMainDeactivated(MainWindowDeactivatedData obj)
+    {
+      if (this.List.Items.Count > 0)
+      {
+        var first = this.List.Items[0];
+        this.List.ScrollIntoView(first);
+      }
     }
   }
 }

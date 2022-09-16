@@ -139,6 +139,7 @@
     <Compile Include="Data\SettingsData.cs" />
     <Compile Include="Events\ClipboardOnlineItemsRetrivedEvent.cs" />
     <Compile Include="Events\ClipboardPinnedChangedEvent.cs" />
+    <Compile Include="Events\MainWindowActivatedEvent.cs" />
     <Compile Include="Events\MainWindowDeactivatedEvent.cs" />
     <Compile Include="Events\SelectionChangedEvent.cs" />
     <Compile Include="Events\ClipboardChangedEvent.cs" />

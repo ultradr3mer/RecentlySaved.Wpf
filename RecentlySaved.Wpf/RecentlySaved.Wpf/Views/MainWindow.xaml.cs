@@ -42,8 +42,8 @@ namespace RecentlySaved.Wpf.Views
 
     private IRegionManager regionManager;
     private MainWindowDeactivatedEvent deactivatedEvent;
-
-    private int aspect = 8;
+    private MainWindowActivatedEvent activatedEvent;
+    private double aspect = 8.0;
 
     [DllImport("user32.dll", SetLastError = true)]
     private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
@@ -81,6 +81,7 @@ namespace RecentlySaved.Wpf.Views
       this.clipboardWatcher = clipboardWatcher;
       eventAggregator.GetEvent<SelectionChangedEvent>().Subscribe(this.OnSelectedionChanged);
       this.deactivatedEvent = eventAggregator.GetEvent<MainWindowDeactivatedEvent>();
+      this.activatedEvent = eventAggregator.GetEvent<MainWindowActivatedEvent>();
 
       this.MoveToBottomPosition();
     }
@@ -88,7 +89,7 @@ namespace RecentlySaved.Wpf.Views
     private void MoveToBottomPosition()
     {
       this.Height = SystemParameters.WorkArea.Height / aspect;
-      this.Width = SystemParameters.WorkArea.Width * 0.8;
+      this.Width = Math.Min(SystemParameters.WorkArea.Width * 0.9, 1800);
 
       this.Left = (SystemParameters.WorkArea.Width - this.Width) / 2;
       this.Top = (SystemParameters.WorkArea.Height - this.Height);
@@ -125,6 +126,7 @@ namespace RecentlySaved.Wpf.Views
     protected override void OnActivated(EventArgs e)
     {
       base.OnActivated(e);
+      activatedEvent.Publish(new MainWindowActivatedData());
       this.persistantRepository.Save(false);
     }
 
@@ -189,6 +191,7 @@ namespace RecentlySaved.Wpf.Views
       var hwnd = new WindowInteropHelper(this).Handle;
       SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
     }
+
     private void DragMouseDown(object sender, MouseButtonEventArgs e)
     {
       if (e.ChangedButton == MouseButton.Left)
@@ -199,7 +202,14 @@ namespace RecentlySaved.Wpf.Views
 
     private void PopUpClick(object sender, RoutedEventArgs e)
     {
-      aspect /= 2;
+      aspect = Math.Max(aspect / 2.0, 1.0);
+
+      MoveToBottomPosition();
+    }
+
+    private void PopDownClick(object sender, RoutedEventArgs e)
+    {
+      aspect = Math.Max(aspect * 2.0, 8.0);
 
       MoveToBottomPosition();
     }
