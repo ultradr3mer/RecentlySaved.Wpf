@@ -1,4 +1,5 @@
-﻿using Prism.Events;
+﻿using AdvancedClipboard.Wpf.Services;
+using Prism.Events;
 using RecentlySaved.Wpf.Composite;
 using RecentlySaved.Wpf.Data;
 using RecentlySaved.Wpf.Events;
@@ -15,17 +16,21 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
     public string Content { get; set; }
     public string MetaString { get; set; }
     public bool IsPinned { get; set; }
+    public Uri ImageSource { get; set; }
 
     protected string GeneratePreview(string content)
     {
+      if (string.IsNullOrEmpty(content))
+      {
+        return string.Empty;
+      }
+
       IEnumerable<string> lines = content.Replace(Environment.NewLine, "\n").Replace("\t", "  ").Split('\n');
       int minSpaces = lines.Min(l => l.Length - l.TrimStart().Length);
       lines = lines.Select(l => ">" + l.Substring(minSpaces).TrimEnd());
 
       return string.Join(Environment.NewLine, lines);
     }
-
-
   }
 
   public class ClipCardViewModel : ClipCardViewModelBase
@@ -54,6 +59,27 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
     {
       this.StringPreview = this.GeneratePreview(data.Content);
       this.MetaString = data.Datum.ToString("d") + " " + data.ProcessName;
+      if (!string.IsNullOrEmpty(data.ImageFileName))
+      {
+        this.ImageSource = ClipboardWatcher.GetUriForImage(data.ImageFileName);
+      }
+    }
+
+    public override bool Equals(object obj)
+    {
+      var data = this.WriteToDataModel();
+
+      if (obj is ClipCardViewModel otherVm)
+      {
+        return data.Equals(otherVm.WriteToDataModel());
+      }
+
+      if (obj is ClipData otherData)
+      {
+        return data.Equals(otherData);
+      }
+
+      return false;
     }
   }
 }

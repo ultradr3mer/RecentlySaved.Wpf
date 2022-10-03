@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RecentlySaved.Wpf.Data
 {
@@ -12,5 +8,16 @@ namespace RecentlySaved.Wpf.Data
     public string ProcessName { get; set; }
     public DateTime Datum { get; set; }
     public bool IsPinned { get; set; }
+    public string ImageFileName { get; set; }
+
+    public override bool Equals(object obj)
+    {
+      if (obj is ClipData other)
+      {
+        return this.Content == other.Content && ImageFileName == other.ImageFileName;
+      }
+
+      return false;
+    }
   }
 }

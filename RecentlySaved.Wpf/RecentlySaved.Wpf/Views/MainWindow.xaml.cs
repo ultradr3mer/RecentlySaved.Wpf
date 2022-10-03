@@ -75,9 +75,13 @@ namespace RecentlySaved.Wpf.Views
       regionManager.RegisterViewWithRegion(MainWindow.ClipbboardOnlineRegion, () => container.Resolve<LoginFragment>());
       regionManager.RegisterViewWithRegion(MainWindow.ClipbboardOnlineRegion, () => container.Resolve<ClipboardOnlineFragment>());
 
+      eventAggregator.GetEvent<SelectionChangedEvent>();
+
+      var updateEvent = eventAggregator.GetEvent<ClipboardUpdateEvent>();
       WpfClipboardMonitor.ClipboardMonitor clip = new WpfClipboardMonitor.ClipboardMonitor(this, true);
-      clip.ClipboardUpdate += this.Clip_ClipboardUpdate;
+      clip.ClipboardUpdate += (o, a) => updateEvent.Publish(new ClipboardUpdateData());
       this.eventAggregator = eventAggregator;
+
       this.clipboardWatcher = clipboardWatcher;
       eventAggregator.GetEvent<SelectionChangedEvent>().Subscribe(this.OnSelectedionChanged);
       this.deactivatedEvent = eventAggregator.GetEvent<MainWindowDeactivatedEvent>();
@@ -152,11 +156,6 @@ namespace RecentlySaved.Wpf.Views
       {
         regionManager.RequestNavigate(MainWindow.Preview, new Uri(nameof(ClipPreviewOnlineFragment), UriKind.Relative));
       }
-    }
-
-    private void Clip_ClipboardUpdate(object sender, EventArgs e)
-    {
-      this.clipboardWatcher.Notify();
     }
 
     private void MinimizeClick(object sender, RoutedEventArgs e)

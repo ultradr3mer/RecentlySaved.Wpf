@@ -54,7 +54,7 @@ namespace RecentlySaved.Wpf.Repositories
     {
       lock (lockObj)
       {
-        var existing = clipboardData.FirstOrDefault(c => c.Content == data.Data.Content);
+        var existing = clipboardData.FirstOrDefault(c => c.Equals(data.Data));
         if (existing != null)
         {
           existing.Datum = DateTime.Now;

@@ -141,11 +141,15 @@
     </Compile>
     <Compile Include="Composite\BaseViewModel.cs" />
     <Compile Include="Composite\BaseViewModelOfT.cs" />
+    <Compile Include="Composite\ObjectNullBoolConverter.cs" />
+    <Compile Include="Composite\ObjectNullVisibilityConverter.cs" />
+    <Compile Include="Composite\StringNullOrEmptyVisibilityConverter.cs" />
     <Compile Include="Constants\ContentTypes.cs" />
     <Compile Include="Data\ClipData.cs" />
     <Compile Include="Data\FileData.cs" />
     <Compile Include="Data\FileRepoData.cs" />
     <Compile Include="Data\SettingsData.cs" />
+    <Compile Include="Events\ClipboardUpdateEvent.cs" />
     <Compile Include="Events\ClipboardOnlineItemsRetrivedEvent.cs" />
     <Compile Include="Events\ClipboardPinnedChangedEvent.cs" />
     <Compile Include="Events\MainWindowActivatedEvent.cs" />
@@ -156,6 +160,7 @@
     <Compile Include="Events\FileDeletedEvent.cs" />
     <Compile Include="Events\FileRenamedEvent.cs" />
     <Compile Include="Extensions\BaseViewModelExtensions.cs" />
+    <Compile Include="Extensions\ByteArrayExtensions.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Interop\WindowBlur.cs" />
     <Compile Include="Repositories\OnlineRepository.cs" />
@@ -245,6 +250,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

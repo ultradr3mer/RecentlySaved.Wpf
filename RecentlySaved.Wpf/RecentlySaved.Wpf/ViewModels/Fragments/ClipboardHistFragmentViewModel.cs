@@ -38,6 +38,7 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
       eventAggregator.GetEvent<ClipboardChangedEvent>().Subscribe(this.OnClipCreatedChanged, ThreadOption.UIThread);
       eventAggregator.GetEvent<SelectionChangedEvent>().Subscribe(this.OnSelectionChanged);
+      eventAggregator.GetEvent<MainWindowDeactivatedEvent>().Subscribe(this.OnDeactivated);
       eventAggregator.GetEvent<ClipboardPinnedChangedEvent>().Subscribe(this.OnPinnedChanged);
       this.selectionChangedEvent = eventAggregator.GetEvent<SelectionChangedEvent>();
 
@@ -68,6 +69,12 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
       this.Items.Clear();
       foreach (ClipData item in persistantRepository.GetRecentClipboardData())
       {
+        var existing = this.Items.FirstOrDefault(c => c.Equals(item));
+        if (existing != null)
+        {
+          this.Items.Remove(existing);
+        }
+
         ClipCardViewModel vm = this.container.Resolve<ClipCardViewModel>().GetWithDataModel(item);
         this.Items.Add(vm);
       }
@@ -105,7 +112,7 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
         return;
       }
 
-      var existing = this.Items.FirstOrDefault(c => c.Content == data.Data.Content);
+      var existing = this.Items.FirstOrDefault(c => c.Equals(data.Data));
       if (existing != null)
       {
         this.Items.Remove(existing);

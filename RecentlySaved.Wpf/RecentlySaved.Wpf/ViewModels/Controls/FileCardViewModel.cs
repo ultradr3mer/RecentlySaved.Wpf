@@ -20,6 +20,7 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
 
   public class FileCardViewModel : FileCardViewModelBase
   {
+
     protected override void OnReadingDataModel(FileData data)
     {
       this.FileName = Path.GetFileName(data.FullPath);

@@ -3,19 +3,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:designTime="clr-namespace:RecentlySaved.Wpf.ViewModels.Controls.DesignTime"
+             xmlns:designTime="clr-namespace:RecentlySaved.Wpf.ViewModels.Controls.DesignTime" xmlns:comp="clr-namespace:RecentlySaved.Wpf.Composite"
              mc:Ignorable="d" 
              Height="43" Width="150"
              d:DataContext ="{d:DesignInstance {x:Type designTime:FileCardViewModelDesignTime}, IsDesignTimeCreatable=True}">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <comp:StringNullOrEmptyVisibilityConverter x:Key="StringNullOrEmptyBoolConverter" />
+      <comp:ObjectNullVisibilityConverter x:Key="ObjectNullVisibilityConverter" />
+    </ResourceDictionary>
+  </UserControl.Resources>
   <Grid x:Name="MainGrid" Background="{DynamicResource MahApps.Brushes.Button.Square.Background.MouseOver}">
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
-    <Label  Content="{Binding FileName}" Grid.ColumnSpan="2" Padding="4,2,4,2" />
+    <Label Content="{Binding FileName}" Grid.ColumnSpan="2" Padding="4,2,4,2" />
     <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" 
-                 TextWrapping="NoWrap" 
-                 Grid.Row="1" 
-                 FontSize="10" Name="Path" Text="..." HorizontalAlignment="Stretch" Background="{StaticResource MahApps.Brushes.Accent}" Padding="4,0,4,2"/>
+               TextWrapping="NoWrap" 
+               Grid.Row="1" 
+               FontSize="10" 
+               Name="Path" 
+               Text="..." 
+               HorizontalAlignment="Stretch" 
+               Background="{StaticResource MahApps.Brushes.Accent}" 
+               Padding="4,0,4,2" 
+               Visibility="{Binding TextContentShort, Converter={StaticResource StringNullOrEmptyBoolConverter}}"/>
   </Grid>
 </UserControl>
