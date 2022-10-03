@@ -14,9 +14,8 @@ namespace RecentlySaved.Wpf
     private FileCreatedChangedEvent fileCreatedChangedEvent;
     private FileDeletedEvent fileDeletedEvent;
     private FileRenamedEvent fileRenamedEvent;
-    private readonly PersistantRepository fileRepository;
 
-    public FileWatcher(SettingsRepository settingsRepository, PersistantRepository fileRepository, IEventAggregator eventAggregator)
+    public FileWatcher(SettingsRepository settingsRepository, IEventAggregator eventAggregator)
     {
 
       this.fileCreatedChangedEvent = eventAggregator.GetEvent<FileCreatedChangedEvent>();
@@ -51,8 +50,6 @@ namespace RecentlySaved.Wpf
 
         this.watcherList.Add(watcher);
       }
-
-      this.fileRepository = fileRepository;
     }
 
 

@@ -13,10 +13,10 @@ namespace RecentlySaved.Wpf.Views.Fragments
     {
       InitializeComponent();
 
-      eventAggregator.GetEvent<MainWindowDeactivatedEvent>().Subscribe(this.OnMainDeactivated, ThreadOption.UIThread);
+      eventAggregator.GetEvent<MainWindowActivatedEvent>().Subscribe(this.OnMainDeactivated, ThreadOption.UIThread);
     }
 
-    private void OnMainDeactivated(MainWindowDeactivatedData obj)
+    private void OnMainDeactivated(MainWindowActivatedData obj)
     {
       if (this.List.Items.Count > 0)
       {

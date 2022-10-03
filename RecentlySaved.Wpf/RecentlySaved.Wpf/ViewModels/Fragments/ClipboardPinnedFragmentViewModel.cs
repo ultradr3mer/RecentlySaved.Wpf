@@ -19,8 +19,6 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
     public ClipCardViewModelBase SelectedItem { get; set; }
   }
 
-
-
   public class ClipboardPinnedFragmentViewModel : ClipboardPinnedFragmentViewModelBase
   {
     private readonly IUnityContainer container;
@@ -35,7 +33,6 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
       this.watcher = watcher;
       this.ReadItems();
 
-      eventAggregator.GetEvent<MainWindowDeactivatedEvent>().Subscribe(this.OnDeactivated);
       eventAggregator.GetEvent<ClipboardPinnedChangedEvent>().Subscribe(this.OnClipPinned);
       eventAggregator.GetEvent<SelectionChangedEvent>().Subscribe(this.OnSelectionChanged);
       this.selectionChangedEvent = eventAggregator.GetEvent<SelectionChangedEvent>();
@@ -78,11 +75,6 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
       }
     }
 
-    private void OnDeactivated(MainWindowDeactivatedData obj)
-    {
-      ReadItems();
-    }
-
     private void ClipboardHistFragmentViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
       if (e.PropertyName == nameof(this.SelectedItem))
@@ -93,7 +85,7 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
         }
 
         this.selectionChangedEvent.Publish(new SelectionChangedData() { Item = this.SelectedItem });
-        ClipboardHistFragmentViewModel.IsALteringClipboard = true;
+        ClipboardHistFragmentViewModel.IsAlteringClipboard = true;
         this.watcher.PutOntoClipboard(this.SelectedItem.WriteToDataModel());
       }
     }

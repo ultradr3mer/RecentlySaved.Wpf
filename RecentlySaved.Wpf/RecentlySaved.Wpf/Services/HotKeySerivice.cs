@@ -1,11 +1,6 @@
 ﻿using RecentlySaved.Wpf.Views;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Interop;
 
 namespace RecentlySaved.Wpf.Services
@@ -48,10 +43,11 @@ namespace RecentlySaved.Wpf.Services
     {
       var helper = new WindowInteropHelper(this.hotKeyWindow);
       const uint VK_F10 = 0x79;
-      const uint QKEY = 0x51;
+      const uint Q_KEY = 0x51;
+      const uint S_KEY = 0x53;
       const uint MOD_CTRL = 0x0002;
       const uint MOD_ALT = 0x0001;
-      if (!RegisterHotKey(helper.Handle, HOTKEY_ID, MOD_ALT, QKEY))
+      if (!RegisterHotKey(helper.Handle, HOTKEY_ID, MOD_ALT, S_KEY))
       {
         // handle error
       }

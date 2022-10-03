@@ -7,6 +7,7 @@ using RecentlySaved.Wpf.Extensions;
 using RecentlySaved.Wpf.Repositories;
 using RecentlySaved.Wpf.ViewModels.Controls;
 using System;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Linq;
 using Unity;
@@ -25,7 +26,8 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
     private readonly PersistantRepository persistantRepository;
     private readonly ClipboardWatcher watcher;
     private readonly SelectionChangedEvent selectionChangedEvent;
-    public static bool IsALteringClipboard;
+    public static bool IsAlteringClipboard;
+    private readonly ConcurrentQueue<ClipboardChangedData> changedDatas = new ConcurrentQueue<ClipboardChangedData>();
 
     public ClipboardHistFragmentViewModel(IEventAggregator eventAggregator, IUnityContainer container, PersistantRepository persistantRepository, ClipboardWatcher watcher)
     {
@@ -35,7 +37,6 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
       this.ReadItems();
 
       eventAggregator.GetEvent<ClipboardChangedEvent>().Subscribe(this.OnClipCreatedChanged, ThreadOption.UIThread);
-      eventAggregator.GetEvent<MainWindowDeactivatedEvent>().Subscribe(this.OnDeactivated);
       eventAggregator.GetEvent<SelectionChangedEvent>().Subscribe(this.OnSelectionChanged);
       eventAggregator.GetEvent<ClipboardPinnedChangedEvent>().Subscribe(this.OnPinnedChanged);
       this.selectionChangedEvent = eventAggregator.GetEvent<SelectionChangedEvent>();
@@ -74,8 +75,11 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
     private void OnDeactivated(MainWindowDeactivatedData obj)
     {
-      ClipboardHistFragmentViewModel.IsALteringClipboard = false;
-      ReadItems();
+      ClipboardHistFragmentViewModel.IsAlteringClipboard = false;
+      while (this.changedDatas.TryDequeue(out ClipboardChangedData changedDatas))
+      {
+        this.OnClipCreatedChanged(changedDatas);
+      }
     }
 
     private void ClipboardHistFragmentViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -88,15 +92,16 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
         }
 
         this.selectionChangedEvent.Publish(new SelectionChangedData() { Item = this.SelectedItem });
-        ClipboardHistFragmentViewModel.IsALteringClipboard = true;
+        ClipboardHistFragmentViewModel.IsAlteringClipboard = true;
         this.watcher.PutOntoClipboard(this.SelectedItem.WriteToDataModel());
       }
     }
 
     private void OnClipCreatedChanged(ClipboardChangedData data)
     {
-      if (ClipboardHistFragmentViewModel.IsALteringClipboard)
+      if (ClipboardHistFragmentViewModel.IsAlteringClipboard)
       {
+        changedDatas.Enqueue(data);
         return;
       }
 

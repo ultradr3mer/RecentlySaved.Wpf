@@ -30,6 +30,7 @@ namespace RecentlySaved.Wpf.Repositories
       {
         PathsToWatch = new List<string> { "%HOMEPATH%\\Downloads", "%HOMEPATH%\\Documents" }
       };
+
       string exampleJson = JsonConvert.SerializeObject(example);
 
       if (File.Exists(this.fileExampleName))

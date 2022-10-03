@@ -11,7 +11,7 @@
         prism:ViewModelLocator.AutoWireViewModel="True"
         Loaded="MetroWindowLoaded" 
         Title="MainWindow" Height="450" Width="1600"
-        Background="Transparent">
+        Background="Transparent" Icon="/Views/StartPlusIcon32.png">
   <WindowChrome.WindowChrome>
     <WindowChrome GlassFrameThickness="-1" CaptionHeight="0" />
   </WindowChrome.WindowChrome>

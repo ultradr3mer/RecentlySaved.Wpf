@@ -55,7 +55,7 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
         this.selectionChangedEvent.Publish(new SelectionChangedData() { Item = selectedItem });
         var data = new ClipData() { Content = selectedItem.TextContent, Datum = DateTime.Now, ProcessName = "Advanced Clipboard" };
-        ClipboardHistFragmentViewModel.IsALteringClipboard = true;
+        ClipboardHistFragmentViewModel.IsAlteringClipboard = true;
 
         this.watcher.PutOntoClipboard(data);
       }
