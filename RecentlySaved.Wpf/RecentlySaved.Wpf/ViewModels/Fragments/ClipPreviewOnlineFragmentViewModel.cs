@@ -5,7 +5,7 @@ using RecentlySaved.Wpf.ViewModels.Controls;
 
 namespace RecentlySaved.Wpf.ViewModels.Fragments
 {
-  internal class ClipPreviewOnlineFragmentViewModel : BaseViewModel
+  internal class ClipPreviewOnlineFragmentViewModel : ObservableBase
   {
     public ClipCardOnlineViewModel Item { get; set; }
 

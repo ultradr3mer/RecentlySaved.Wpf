@@ -7,13 +7,14 @@ using RecentlySaved.Wpf.Extensions;
 using RecentlySaved.Wpf.Repositories;
 using RecentlySaved.Wpf.ViewModels.Controls;
 using System;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Linq;
 using Unity;
 
 namespace RecentlySaved.Wpf.ViewModels.Fragments
 {
-  public class ClipboardPinnedFragmentViewModelBase : BaseViewModel
+  public class ClipboardPinnedFragmentViewModelBase : ObservableBase
   {
     public BindingList<ClipCardViewModelBase> Items { get; set; } = new BindingList<ClipCardViewModelBase>();
     public ClipCardViewModelBase SelectedItem { get; set; }
@@ -26,6 +27,8 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
     private readonly ClipboardWatcher watcher;
     private readonly SelectionChangedEvent selectionChangedEvent;
 
+    private readonly ConcurrentQueue<ClipData> changedDatas = new ConcurrentQueue<ClipData>();
+
     public ClipboardPinnedFragmentViewModel(IEventAggregator eventAggregator, IUnityContainer container, PersistantRepository persistantRepository, ClipboardWatcher watcher)
     {
       this.container = container;
@@ -35,9 +38,19 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
       eventAggregator.GetEvent<ClipboardPinnedChangedEvent>().Subscribe(this.OnClipPinned);
       eventAggregator.GetEvent<SelectionChangedEvent>().Subscribe(this.OnSelectionChanged);
+      eventAggregator.GetEvent<MainWindowDeactivatedEvent>().Subscribe(this.OnDeactivated);
       this.selectionChangedEvent = eventAggregator.GetEvent<SelectionChangedEvent>();
 
       this.PropertyChanged += this.ClipboardHistFragmentViewModel_PropertyChanged;
+    }
+
+    private void OnDeactivated(MainWindowDeactivatedData obj)
+    {
+      ClipboardHistFragmentViewModel.IsAlteringClipboard = false;
+      while (this.changedDatas.TryDequeue(out ClipData data))
+      {
+        this.MoveItemToTop(data);
+      }
     }
 
     private void OnSelectionChanged(SelectionChangedData data)
@@ -50,17 +63,22 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
     private void OnClipPinned(ClipboardPinnedChangedData data)
     {
+      this.MoveItemToTop(data.Data);
+    }
+
+    private void MoveItemToTop(ClipData data)
+    {
       foreach (var singleItem in this.Items.ToList())
       {
-        if (singleItem.DatamodelEquals(data.Data))
+        if (singleItem.Equals(data))
         {
           this.Items.Remove(singleItem);
         }
       }
 
-      if (data.Data.IsPinned)
+      if (data.IsPinned)
       {
-        ClipCardViewModel vm = this.container.Resolve<ClipCardViewModel>().GetWithDataModel(data.Data);
+        ClipCardViewModel vm = this.container.Resolve<ClipCardViewModel>().GetWithDataModel(data);
         this.Items.Insert(0, vm);
       }
     }
@@ -86,7 +104,9 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
         this.selectionChangedEvent.Publish(new SelectionChangedData() { Item = this.SelectedItem });
         ClipboardHistFragmentViewModel.IsAlteringClipboard = true;
-        this.watcher.PutOntoClipboard(this.SelectedItem.WriteToDataModel());
+        ClipData data = this.SelectedItem.WriteToDataModel();
+        this.watcher.PutOntoClipboard(data);
+        this.changedDatas.Enqueue(data);
       }
     }
   }

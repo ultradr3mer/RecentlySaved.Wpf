@@ -2,7 +2,7 @@
 
 namespace RecentlySaved.Wpf.Composite
 {
-  public class BaseViewModel<T> : BaseViewModel where T : class
+  public class BaseViewModel<T> : ObservableBase where T : class
   {
     #region Fields
 
@@ -15,16 +15,34 @@ namespace RecentlySaved.Wpf.Composite
 
     public void SetDataModel(T value)
     {
+      if (this.attachedDataModel is ObservableBase oldObservable)
+      {
+        oldObservable.PropertyChanged -= this.Model_PropertyChanged;
+      }
+
       this.IsReadingDataModel = true;
       this.attachedDataModel = value;
+      
+      if(this.attachedDataModel is ObservableBase newObservable)
+      {
+        newObservable.PropertyChanged += this.Model_PropertyChanged;
+      }
+
       value.Adapt(this, value.GetType(), this.GetType());
       this.OnReadingDataModel(value);
       this.IsReadingDataModel = false;
     }
 
-    internal bool DatamodelEquals(T data)
+    private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-      return this.attachedDataModel == data;
+      var thisProp = this.GetType().GetProperty(e.PropertyName);
+      if(thisProp == null)
+      {
+        return;
+      }
+
+      var modelProp = typeof(T).GetProperty(e.PropertyName);
+      thisProp.SetValue(obj: this, value: modelProp.GetValue(this.attachedDataModel), index: null);
     }
 
     protected virtual void OnReadingDataModel(T data)

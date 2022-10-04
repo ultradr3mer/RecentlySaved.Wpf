@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace RecentlySaved.Wpf.ViewModels.Fragments
 {
-  internal class ClipPreviewFragmentViewModel : BaseViewModel
+  internal class ClipPreviewFragmentViewModel : ObservableBase
   {
     private readonly UploadService uploadService;
     public ClipCardViewModelBase Item { get; set; }
@@ -28,7 +28,14 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
     private async Task UploadCommandExecute()
     {
-      await this.uploadService.PostPlainTextAsync(Item.Content);
+      if(!string.IsNullOrEmpty(Item.Content))
+      {
+        await this.uploadService.PostPlainTextAsync(Item.Content);
+      }
+      else if(Item.ImageSource != null)
+      {
+        await this.uploadService.PostFile(Item.ImageSource.AbsolutePath);
+      }
     }
 
     private void OnSelectionChanged(SelectionChangedData data)

@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace RecentlySaved.Wpf.ViewModels.Fragments
 {
-  internal class FilePreviewFragmentViewModelBase : BaseViewModel
+  internal class FilePreviewFragmentViewModelBase : ObservableBase
   {
     public FileCardViewModel Item { get; set; }
   }

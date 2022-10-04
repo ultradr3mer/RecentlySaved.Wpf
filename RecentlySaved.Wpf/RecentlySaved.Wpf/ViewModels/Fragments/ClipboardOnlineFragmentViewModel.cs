@@ -13,7 +13,7 @@ using Unity;
 
 namespace RecentlySaved.Wpf.ViewModels.Fragments
 {
-  public class ClipboardOnlineFragmentViewModelBase : BaseViewModel
+  public class ClipboardOnlineFragmentViewModelBase : ObservableBase
   {
     public BindingList<ClipCardOnlineViewModel> Items { get; set; } = new BindingList<ClipCardOnlineViewModel>();
     public ClipCardOnlineViewModel SelectedItem { get; set; }

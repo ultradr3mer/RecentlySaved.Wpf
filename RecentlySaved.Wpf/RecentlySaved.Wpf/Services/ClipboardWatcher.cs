@@ -139,7 +139,11 @@ namespace AdvancedClipboard.Wpf.Services
         if(lastText != clipData.Content)
         {
           lastText = clipData.Content;
+          lastImageMd5 = string.Empty;
           Clipboard.SetText(clipData.Content);
+
+          string processName = this.GetForegroundProcessName();
+          this.clipboardChanged.Publish(new ClipboardChangedData() { Data = clipData });
         }
       }
       else if(!string.IsNullOrEmpty(clipData.ImageFileName))
@@ -148,7 +152,11 @@ namespace AdvancedClipboard.Wpf.Services
         if (lastImageMd5 != md5)
         {
           lastImageMd5 = md5;
+          lastText = string.Empty;
           Clipboard.SetImage(new BitmapImage(GetUriForImage(clipData.ImageFileName)));
+
+          string processName = this.GetForegroundProcessName();
+          this.clipboardChanged.Publish(new ClipboardChangedData() { Data = clipData });
         }
       }
     }

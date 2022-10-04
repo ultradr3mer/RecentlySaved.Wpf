@@ -3,9 +3,9 @@ using Prism.Events;
 using RecentlySaved.Wpf.Composite;
 using RecentlySaved.Wpf.Data;
 using RecentlySaved.Wpf.Events;
-using RecentlySaved.Wpf.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace RecentlySaved.Wpf.ViewModels.Controls
@@ -67,16 +67,17 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
 
     public override bool Equals(object obj)
     {
-      var data = this.WriteToDataModel();
-
       if (obj is ClipCardViewModel otherVm)
       {
-        return data.Equals(otherVm.WriteToDataModel());
+        return this.Content == otherVm.Content &&
+          this.ImageSource?.LocalPath == otherVm.ImageSource?.LocalPath;
       }
 
       if (obj is ClipData otherData)
       {
-        return data.Equals(otherData);
+        return this.Content == otherData.Content && 
+          ((this.ImageSource == null && string.IsNullOrEmpty(otherData.ImageFileName)) ||
+          Path.GetFileName(this.ImageSource.LocalPath) == otherData.ImageFileName);
       }
 
       return false;

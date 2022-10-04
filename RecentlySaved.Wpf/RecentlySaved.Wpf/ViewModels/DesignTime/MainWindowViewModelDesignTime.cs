@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace RecentlySaved.Wpf.ViewModels.DesignTime
 {
-  public class MainWindowViewModelDesignTime : BaseViewModel
+  public class MainWindowViewModelDesignTime : ObservableBase
   {
     public List<EntryItemViewModel> Items { get; set; }
 

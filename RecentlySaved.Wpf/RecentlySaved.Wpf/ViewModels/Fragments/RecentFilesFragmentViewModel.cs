@@ -12,7 +12,7 @@ using Unity;
 
 namespace RecentlySaved.Wpf.ViewModels.Fragments
 {
-  public class RecentFilesFragementViewModelBase : BaseViewModel
+  public class RecentFilesFragementViewModelBase : ObservableBase
   {
     public BindingList<FileCardViewModel> Items { get; set; } = new BindingList<FileCardViewModel>();
     public FileCardViewModel SelectedItem { get; set; }

@@ -10,7 +10,7 @@ namespace RecentlySaved.Wpf.Services
 {
   public class UploadService
   {
-    private const string UploadLaneName = "QuickBoard";
+    private const string UploadLaneName = "StartPlus";
     private readonly OnlineRepository onlineRepository;
     private LaneGetData uploadLane;
 

@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace RecentlySaved.Wpf.Composite
 {
-  public class BaseViewModel : INotifyPropertyChanged
+  public class ObservableBase : INotifyPropertyChanged
   {
     #region Events
 

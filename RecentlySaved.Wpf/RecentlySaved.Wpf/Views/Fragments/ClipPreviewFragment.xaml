@@ -5,15 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             xmlns:prism="http://prismlibrary.com/"
+             xmlns:prism="http://prismlibrary.com/" xmlns:comp="clr-namespace:RecentlySaved.Wpf.Composite"
              prism:ViewModelLocator.AutoWireViewModel="True">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <comp:StringNullOrEmptyVisibilityConverter x:Key="StringNullOrEmptyBoolConverter" />
+      <comp:ObjectNullVisibilityConverter x:Key="ObjectNullVisibilityConverter" />
+    </ResourceDictionary>
+  </UserControl.Resources>
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="20"/>
     </Grid.RowDefinitions>
-    <TextBox HorizontalAlignment="Stretch" Margin="5" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Path=Item.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" />
+    <TextBox HorizontalAlignment="Stretch" 
+             Margin="5" 
+             TextWrapping="Wrap" 
+             AcceptsReturn="True" 
+             Text="{Binding Path=Item.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+             VerticalAlignment="Stretch"
+             Visibility="{Binding Path=Item.Content, Converter={StaticResource ObjectNullVisibilityConverter}}"/>
+    <Image Stretch="Uniform" 
+           Visibility="{Binding Item.ImageSource, Converter={StaticResource ObjectNullVisibilityConverter}}"
+           Source="{Binding Item.ImageSource}"/>
     <Grid Grid.Row="1">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
