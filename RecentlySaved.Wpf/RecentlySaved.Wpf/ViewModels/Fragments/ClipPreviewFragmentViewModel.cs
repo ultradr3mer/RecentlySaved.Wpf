@@ -1,4 +1,5 @@
-﻿using MvvmHelpers.Commands;
+﻿using AdvancedClipboard.Wpf.Services;
+using MvvmHelpers.Commands;
 using Prism.Commands;
 using Prism.Events;
 using RecentlySaved.Wpf.Composite;
@@ -28,13 +29,13 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
     private async Task UploadCommandExecute()
     {
-      if(!string.IsNullOrEmpty(Item.Content))
+      if (!string.IsNullOrEmpty(Item.Content))
       {
         await this.uploadService.PostPlainTextAsync(Item.Content);
       }
-      else if(Item.ImageSource != null)
+      else if (Item.ImageFileName != null)
       {
-        await this.uploadService.PostFile(Item.ImageSource.AbsolutePath);
+        await this.uploadService.PostFile(ClipboardWatcher.GetUriForImage(Item.ImageFileName).AbsolutePath);
       }
     }
 

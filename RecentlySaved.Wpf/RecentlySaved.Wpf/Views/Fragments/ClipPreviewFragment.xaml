@@ -9,7 +9,7 @@
              prism:ViewModelLocator.AutoWireViewModel="True">
   <UserControl.Resources>
     <ResourceDictionary>
-      <comp:StringNullOrEmptyVisibilityConverter x:Key="StringNullOrEmptyBoolConverter" />
+      <comp:StringNullOrEmptyVisibilityConverter x:Key="StringNullOrEmptyVisibilityConverter" />
       <comp:ObjectNullVisibilityConverter x:Key="ObjectNullVisibilityConverter" />
     </ResourceDictionary>
   </UserControl.Resources>
@@ -25,7 +25,7 @@
              AcceptsReturn="True" 
              Text="{Binding Path=Item.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
              VerticalAlignment="Stretch"
-             Visibility="{Binding Path=Item.Content, Converter={StaticResource ObjectNullVisibilityConverter}}"/>
+             Visibility="{Binding Path=Item.Content, Converter={StaticResource StringNullOrEmptyVisibilityConverter}}"/>
     <Image Stretch="Uniform" 
            Visibility="{Binding Item.ImageSource, Converter={StaticResource ObjectNullVisibilityConverter}}"
            Source="{Binding Item.ImageSource}"/>

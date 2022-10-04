@@ -8,7 +8,12 @@ using RecentlySaved.Wpf.Extensions;
 using RecentlySaved.Wpf.ViewModels.Controls;
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media.Imaging;
 using Unity;
 
 namespace RecentlySaved.Wpf.ViewModels.Fragments
@@ -45,7 +50,7 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
     private void ClipboardOnlineFragmentViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-      if(e.PropertyName == nameof(SelectedItem))
+      if (e.PropertyName == nameof(SelectedItem))
       {
         ClipCardOnlineViewModel selectedItem = this.SelectedItem;
         if (selectedItem == null)
@@ -54,10 +59,61 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
         }
 
         this.selectionChangedEvent.Publish(new SelectionChangedData() { Item = selectedItem });
-        var data = new ClipData() { Content = selectedItem.TextContent, Datum = DateTime.Now, ProcessName = "Advanced Clipboard" };
-        ClipboardHistFragmentViewModel.IsAlteringClipboard = true;
 
-        this.watcher.PutOntoClipboard(data);
+        this.PutOntoClipboard(selectedItem);
+      }
+    }
+
+    private async void PutOntoClipboard(ClipCardOnlineViewModel selectedItem)
+    {
+      var data = new ClipData()
+      {
+        Content = selectedItem.TextContent,
+        Datum = DateTime.Now,
+        ProcessName = "Advanced Clipboard"
+      };
+
+      if (selectedItem.ImageSource != null)
+      {
+        var image = await this.GetBitmapImage(selectedItem.FullFileContentUrl);
+
+        Clipboard.SetImage(image);
+        var bmpSource = Clipboard.GetImage();
+
+        if (this.watcher.CheckMd5AndSave(BitmapFrame.Create(bmpSource), out string md5, out string extension))
+        {
+          data.ImageFileName = md5 + extension;
+        }
+        else
+        {
+          // Selected Image is already in clipboard
+          return;
+        }
+      }
+
+      ClipboardHistFragmentViewModel.IsAlteringClipboard = true;
+      this.watcher.PutOntoClipboard(data);
+    }
+
+    public async Task<BitmapImage> GetBitmapImage(Uri uri)
+    {
+      byte[] buffer = null;
+      using (var httpClient = new System.Net.Http.HttpClient())
+      {
+        buffer = await httpClient.GetByteArrayAsync(uri);
+      }
+
+      using (var stream = new MemoryStream(buffer))
+      {
+        var image = new BitmapImage();
+        image.BeginInit();
+        image.CreateOptions = BitmapCreateOptions.None;
+        image.CacheOption = BitmapCacheOption.OnLoad;
+        image.UriSource = null;
+        image.StreamSource = stream;
+        image.EndInit();
+
+        return image;
       }
     }
 
@@ -69,7 +125,7 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
 
       foreach (var item in data.Entries)
       {
-        if (item.ContentTypeId == ContentTypes.PlainText)
+        if (item.ContentTypeId == ContentTypes.PlainText || item.ContentTypeId == ContentTypes.Image)
         {
           ClipCardOnlineViewModel vm = this.container.Resolve<ClipCardOnlineViewModel>().GetWithDataModel(item);
           if (item.LaneId != null)

@@ -44,6 +44,7 @@ namespace RecentlySaved.Wpf.Views
     private MainWindowDeactivatedEvent deactivatedEvent;
     private MainWindowActivatedEvent activatedEvent;
     private double aspect = 8.0;
+    private ClipboardUpdateEvent updateEvent;
 
     [DllImport("user32.dll", SetLastError = true)]
     private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
@@ -77,9 +78,9 @@ namespace RecentlySaved.Wpf.Views
 
       eventAggregator.GetEvent<SelectionChangedEvent>();
 
-      var updateEvent = eventAggregator.GetEvent<ClipboardUpdateEvent>();
       WpfClipboardMonitor.ClipboardMonitor clip = new WpfClipboardMonitor.ClipboardMonitor(this, true);
-      clip.ClipboardUpdate += (o, a) => updateEvent.Publish(new ClipboardUpdateData());
+      this.updateEvent = eventAggregator.GetEvent<ClipboardUpdateEvent>();
+      clip.ClipboardUpdate += this.Clip_ClipboardUpdate;
       this.eventAggregator = eventAggregator;
 
       this.clipboardWatcher = clipboardWatcher;
@@ -88,6 +89,11 @@ namespace RecentlySaved.Wpf.Views
       this.activatedEvent = eventAggregator.GetEvent<MainWindowActivatedEvent>();
 
       this.MoveToBottomPosition();
+    }
+
+    private void Clip_ClipboardUpdate(object sender, EventArgs e)
+    {
+      this.updateEvent.Publish(new ClipboardUpdateData());
     }
 
     private void MoveToBottomPosition()

@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
 using RecentlySaved.Wpf.Extensions;
+using RecentlySaved.Wpf.Constants;
+using System.Windows.Media.Imaging;
+using System.Net.Cache;
 
 namespace RecentlySaved.Wpf.ViewModels.Controls
 {
@@ -19,9 +22,17 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
     public SolidColorBrush LaneBackgroundBrush { get; set; }
     public SolidColorBrush ForegroundBrush { get; set; }
     public string LaneName { get; internal set; }
+    public ImageSource ImageSource { get; set; }
+    public ImageSource ImageSourceThumbnail { get; set; }
+    public Uri FullFileContentUrl { get; set; }
 
     protected string GeneratePreview(string content)
     {
+      if(string.IsNullOrWhiteSpace(content))
+      {
+        return string.Empty;
+      }
+
       IEnumerable<string> lines = content.Replace(Environment.NewLine, "\n").Replace("\t", "  ").Split('\n');
       int minSpaces = lines.Min(l => l.Length - l.TrimStart().Length);
       lines = lines.Select(l => ">" + l.Substring(minSpaces).TrimEnd());
@@ -32,6 +43,8 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
 
   public class ClipCardOnlineViewModel : ClipCardOnlineViewModelBase
   {
+    private const string BaseUrl = "https://advancedclipboard2.azurewebsites.net/api/file/";
+    private const string UrlThumbnails = "thumb/";
 
     public ClipCardOnlineViewModel()
     {
@@ -44,7 +57,7 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
       {
         this.StringPreview = this.GeneratePreview(this.TextContent);
       }
-      if(e.PropertyName == nameof(Lane))
+      if (e.PropertyName == nameof(Lane))
       {
         var laneColor = (Color)ColorConverter.ConvertFromString(this.Lane.Color);
         this.LaneBackgroundBrush = new SolidColorBrush(laneColor);
@@ -57,6 +70,18 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
     protected override void OnReadingDataModel(ClipboardGetData data)
     {
       this.StringPreview = this.GeneratePreview(data.TextContent);
+
+      if (data.ContentTypeId == ContentTypes.Image)
+      {
+        this.ImageSource = BitmapFrame.Create(CreateUrl(data.FileContentUrl), BitmapCreateOptions.None, BitmapCacheOption.OnDemand);
+        this.ImageSourceThumbnail = BitmapFrame.Create(CreateUrl(UrlThumbnails + data.FileContentUrl), BitmapCreateOptions.None, BitmapCacheOption.OnDemand);
+        this.FullFileContentUrl = CreateUrl(data.FileContentUrl);
+      }
+    }
+
+    public static Uri CreateUrl(string localUrl)
+    {
+      return string.IsNullOrEmpty(localUrl) ? null : new Uri(BaseUrl + localUrl);
     }
   }
 }

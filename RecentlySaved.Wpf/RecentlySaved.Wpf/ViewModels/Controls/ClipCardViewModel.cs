@@ -7,6 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace RecentlySaved.Wpf.ViewModels.Controls
 {
@@ -16,7 +19,9 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
     public string Content { get; set; }
     public string MetaString { get; set; }
     public bool IsPinned { get; set; }
-    public Uri ImageSource { get; set; }
+    public string ImageFileName { get; set; }
+    public ImageSource ImageSource { get; set; }
+    public ImageSource ImageSourceThumbnail { get; set; }
 
     protected string GeneratePreview(string content)
     {
@@ -28,7 +33,6 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
       IEnumerable<string> lines = content.Replace(Environment.NewLine, "\n").Replace("\t", "  ").Split('\n');
       int minSpaces = lines.Min(l => l.Length - l.TrimStart().Length);
       lines = lines.Select(l => ">" + l.Substring(minSpaces).TrimEnd());
-
       return string.Join(Environment.NewLine, lines);
     }
   }
@@ -61,7 +65,14 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
       this.MetaString = data.Datum.ToString("d") + " " + data.ProcessName;
       if (!string.IsNullOrEmpty(data.ImageFileName))
       {
-        this.ImageSource = ClipboardWatcher.GetUriForImage(data.ImageFileName);
+        try
+        {
+          this.ImageSource = BitmapFrame.Create(ClipboardWatcher.GetUriForImage(data.ImageFileName));
+        }
+        catch (FileNotFoundException)
+        {
+          // this.ImageSource = ImageSource.err;
+        }
       }
     }
 
@@ -70,14 +81,13 @@ namespace RecentlySaved.Wpf.ViewModels.Controls
       if (obj is ClipCardViewModel otherVm)
       {
         return this.Content == otherVm.Content &&
-          this.ImageSource?.LocalPath == otherVm.ImageSource?.LocalPath;
+          this.ImageFileName == otherVm.ImageFileName;
       }
 
       if (obj is ClipData otherData)
       {
-        return this.Content == otherData.Content && 
-          ((this.ImageSource == null && string.IsNullOrEmpty(otherData.ImageFileName)) ||
-          Path.GetFileName(this.ImageSource.LocalPath) == otherData.ImageFileName);
+        return this.Content == otherData.Content &&
+          this.ImageFileName == otherData.ImageFileName;
       }
 
       return false;

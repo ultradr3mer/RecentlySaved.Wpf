@@ -18,7 +18,7 @@
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
-    <Label Content="{Binding FileName}" Grid.ColumnSpan="2" Padding="4,2,4,2" />
+    <Label Content="{Binding FileName}" Grid.ColumnSpan="2" Padding="4,2,4,2"/>
     <TextBlock Foreground="{StaticResource MahApps.Brushes.Text}" 
                TextWrapping="NoWrap" 
                Grid.Row="1" 
@@ -27,7 +27,6 @@
                Text="..." 
                HorizontalAlignment="Stretch" 
                Background="{StaticResource MahApps.Brushes.Accent}" 
-               Padding="4,0,4,2" 
-               Visibility="{Binding TextContentShort, Converter={StaticResource StringNullOrEmptyBoolConverter}}"/>
+               Padding="4,0,4,2"/>
   </Grid>
 </UserControl>

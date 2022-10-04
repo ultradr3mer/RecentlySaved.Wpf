@@ -3,11 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:designTime="clr-namespace:RecentlySaved.Wpf.ViewModels.Controls.DesignTime"
+             xmlns:designTime="clr-namespace:RecentlySaved.Wpf.ViewModels.Controls.DesignTime" xmlns:comp="clr-namespace:RecentlySaved.Wpf.Composite"
              mc:Ignorable="d" 
              Height="48" Width="150"
              d:DataContext ="{d:DesignInstance {x:Type designTime:ClipCardOnlineViewModelDesignTime}, IsDesignTimeCreatable=True}"
              UseLayoutRounding="True">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <comp:StringNullOrEmptyVisibilityConverter x:Key="StringNullOrEmptyBoolConverter" />
+      <comp:ObjectNullVisibilityConverter x:Key="ObjectNullVisibilityConverter" />
+    </ResourceDictionary>
+  </UserControl.Resources>
   <Grid x:Name="MainGrid" Background="{DynamicResource MahApps.Brushes.Button.Square.Background.MouseOver}"  >
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="3" />
@@ -22,5 +28,12 @@
                LineHeight="13" 
                LineStackingStrategy="BlockLineHeight" 
                Padding="4,2,4,2" />
+    <Image Source="{Binding ImageSourceThumbnail}" 
+           Grid.Column="2" 
+           Visibility="{Binding ImageSourceThumbnail, Converter={StaticResource ObjectNullVisibilityConverter}}" 
+           VerticalAlignment="Center" 
+           HorizontalAlignment="Stretch"
+           MaxWidth="147"
+           Height="200"/>
   </Grid>
 </UserControl>
