@@ -6,9 +6,16 @@
              xmlns:local="clr-namespace:RecentlySaved.Wpf.Views.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             xmlns:prism="http://prismlibrary.com/"
+             xmlns:prism="http://prismlibrary.com/" 
+             xmlns:comp="clr-namespace:RecentlySaved.Wpf.Composite"
              prism:ViewModelLocator.AutoWireViewModel="True">
-    <Grid DataContext="{Binding Item}">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <comp:StringNullOrEmptyVisibilityConverter x:Key="StringNullOrEmptyVisibilityConverter" />
+      <comp:ObjectNullVisibilityConverter x:Key="ObjectNullVisibilityConverter" />
+    </ResourceDictionary>
+  </UserControl.Resources>
+  <Grid DataContext="{Binding Item}">
     <Grid.RowDefinitions>
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
@@ -19,7 +26,11 @@
              TextWrapping="Wrap" 
              AcceptsReturn="True" 
              Text="{Binding Path=TextContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-             VerticalAlignment="Stretch" />
+             VerticalAlignment="Stretch"
+             Visibility="{Binding Path=TextContent, Converter={StaticResource StringNullOrEmptyVisibilityConverter}}"/>
+    <Image Stretch="Uniform" 
+           Visibility="{Binding Path=ImageSourceThumbnail, Converter={StaticResource ObjectNullVisibilityConverter}}"
+           Source="{Binding Path=ImageSourceThumbnail}"/>
     <TextBlock Background="{Binding LaneBackgroundBrush}" 
                TextWrapping="NoWrap" 
                Grid.Row="2" 
