@@ -1,4 +1,6 @@
-﻿using Prism.Events;
+﻿using Polly.Retry;
+using Polly;
+using Prism.Events;
 using RecentlySaved.Wpf.Data;
 using RecentlySaved.Wpf.Events;
 using RecentlySaved.Wpf.Extensions;
@@ -48,7 +50,16 @@ namespace AdvancedClipboard.Wpf.Services
       BitmapSource imageContent;
       if (Clipboard.ContainsText())
       {
-        string text = Clipboard.GetText(TextDataFormat.Text);
+        string text = lastText;
+
+        RetryPolicy retryIfException =
+          Policy.Handle<Exception>().WaitAndRetry(3, r => TimeSpan.FromMilliseconds(500));
+
+        retryIfException.Execute(() =>
+        {
+          text = Clipboard.GetText(TextDataFormat.Text);
+        });
+
         if (text == lastText)
         {
           return;

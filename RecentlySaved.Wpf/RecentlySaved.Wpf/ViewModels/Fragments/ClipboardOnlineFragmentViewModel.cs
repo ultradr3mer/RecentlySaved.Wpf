@@ -1,4 +1,6 @@
 ﻿using AdvancedClipboard.Wpf.Services;
+using Polly.Retry;
+using Polly;
 using Prism.Events;
 using RecentlySaved.Wpf.Composite;
 using RecentlySaved.Wpf.Constants;
@@ -15,6 +17,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using Unity;
+using System.Drawing;
 
 namespace RecentlySaved.Wpf.ViewModels.Fragments
 {
@@ -77,8 +80,16 @@ namespace RecentlySaved.Wpf.ViewModels.Fragments
       {
         var image = await this.GetBitmapImage(selectedItem.FullFileContentUrl);
 
-        Clipboard.SetImage(image);
-        var bmpSource = Clipboard.GetImage();
+        BitmapSource bmpSource = null;
+
+        RetryPolicy retryIfException =
+          Policy.Handle<Exception>().WaitAndRetry(3, r => TimeSpan.FromMilliseconds(100));
+
+        retryIfException.Execute(() =>
+        {
+          Clipboard.SetImage(image);
+          bmpSource = Clipboard.GetImage();
+        });
 
         if (this.watcher.CheckMd5AndSave(BitmapFrame.Create(bmpSource), out string md5, out string extension))
         {
